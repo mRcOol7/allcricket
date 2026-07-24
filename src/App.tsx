@@ -6,8 +6,12 @@ import { ChampionCelebration } from './components/ChampionCelebration';
 import { MatchScorecardModal } from './components/MatchScorecardModal';
 import { TournamentStatsModal } from './components/TournamentStatsModal';
 import { HeadToHeadModal } from './components/HeadToHeadModal';
+import { TournamentReportModal } from './components/TournamentReportModal';
+import { ChampionsHistoryModal } from './components/ChampionsHistoryModal';
+import { LiveMatchSimulatorModal } from './components/LiveMatchSimulatorModal';
 import { CricketTournamentSize, PitchType } from './types/cricket';
-import { Globe, Play, ShieldCheck, Sparkles, BarChart3, Swords } from 'lucide-react';
+import { Globe, Play, ShieldCheck, Sparkles, BarChart3, Swords, FileText, Trophy, Volume2, VolumeX, Radio } from 'lucide-react';
+import { soundFx } from './utils/soundFx';
 
 export const App: React.FC = () => {
   const {
@@ -16,6 +20,7 @@ export const App: React.FC = () => {
     currentTournament,
     bracketSize,
     pitchType,
+    pastChampions,
     loadCountries,
     setBracketSize,
     setPitchType,
@@ -23,10 +28,20 @@ export const App: React.FC = () => {
     nextRound,
     resetTournament,
     toggleDirectory,
-    toggleStats
+    toggleStats,
+    clearHistory
   } = useCricketStore();
 
   const [isH2HOpen, setIsH2HOpen] = useState(false);
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
+  const [isLiveSimOpen, setIsLiveSimOpen] = useState(false);
+  const [isMuted, setIsMuted] = useState(soundFx.isMuted);
+
+  const toggleMute = () => {
+    soundFx.isMuted = !soundFx.isMuted;
+    setIsMuted(soundFx.isMuted);
+  };
 
   useEffect(() => {
     loadCountries();
@@ -75,13 +90,48 @@ export const App: React.FC = () => {
                 Cricket World Cup Knockout Simulator
               </h1>
               <p className="text-[11px] text-slate-400 hidden sm:block">
-                REST Countries v5 • T20 Scorecards • H2H Predictor & Pitch Conditions
+                REST Countries v5 • Ball-by-Ball Live Sim • Playing XI Squads • Hall of Champions
               </p>
             </div>
           </div>
 
           {/* Action Header Triggers */}
           <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setIsLiveSimOpen(true)}
+              className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-emerald-500/40 text-xs text-emerald-400 font-bold flex items-center space-x-1.5 transition animate-pulse"
+              title="Live Ball-by-Ball Simulator"
+            >
+              <Radio className="w-4 h-4 text-emerald-400" />
+              <span className="hidden sm:inline">Live Ticker</span>
+            </button>
+
+            <button
+              onClick={toggleMute}
+              className={`p-2 rounded-xl border text-xs transition flex items-center justify-center ${
+                isMuted
+                  ? 'bg-slate-900 border-slate-800 text-slate-500 hover:text-slate-300'
+                  : 'bg-emerald-500/10 border-emerald-500/30 text-emerald-400 hover:bg-emerald-500/20'
+              }`}
+              title={isMuted ? 'Unmute Sound Effects' : 'Mute Sound Effects'}
+            >
+              {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+            </button>
+
+            <button
+              onClick={() => setIsHistoryOpen(true)}
+              className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-amber-400 flex items-center space-x-1.5 transition relative"
+              title="Hall of Champions History"
+            >
+              <Trophy className="w-4 h-4" />
+              <span className="hidden sm:inline font-medium">History</span>
+              {pastChampions.length > 0 && (
+                <span className="px-1.5 py-0.2 rounded-full bg-amber-500/20 text-amber-300 font-mono text-[10px] font-bold border border-amber-500/40">
+                  {pastChampions.length}
+                </span>
+              )}
+            </button>
+
             <button
               onClick={() => setIsH2HOpen(true)}
               className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-emerald-400 flex items-center space-x-1.5 transition"
@@ -91,13 +141,23 @@ export const App: React.FC = () => {
             </button>
 
             {currentTournament && (
-              <button
-                onClick={() => toggleStats(true)}
-                className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-amber-400 flex items-center space-x-1.5 transition"
-              >
-                <BarChart3 className="w-4 h-4" />
-                <span className="hidden sm:inline font-medium">Stats</span>
-              </button>
+              <>
+                <button
+                  onClick={() => toggleStats(true)}
+                  className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-amber-400 flex items-center space-x-1.5 transition"
+                >
+                  <BarChart3 className="w-4 h-4" />
+                  <span className="hidden sm:inline font-medium">Stats</span>
+                </button>
+
+                <button
+                  onClick={() => setIsReportOpen(true)}
+                  className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-teal-400 flex items-center space-x-1.5 transition"
+                >
+                  <FileText className="w-4 h-4" />
+                  <span className="hidden sm:inline font-medium">Report</span>
+                </button>
+              </>
             )}
 
             <button
@@ -129,7 +189,7 @@ export const App: React.FC = () => {
                 Simulate 256-Team Mega Cricket World Cup
               </h2>
               <p className="text-sm text-slate-400 leading-relaxed">
-                Every nation and territory plays in Round 1. Choose pitch conditions, track ball-by-ball scorecards, and watch Super Over tie-breakers!
+                Every nation and territory plays in Round 1. Click any team flag to inspect their Playing XI squad, run live ball-by-ball commentary, and save champions to your Hall of Fame!
               </p>
             </div>
 
@@ -229,18 +289,35 @@ export const App: React.FC = () => {
       {/* Head to Head Series Predictor Modal */}
       <HeadToHeadModal isOpen={isH2HOpen} onClose={() => setIsH2HOpen(false)} />
 
+      {/* Live Ball-by-Ball Match Simulator Modal */}
+      <LiveMatchSimulatorModal isOpen={isLiveSimOpen} onClose={() => setIsLiveSimOpen(false)} />
+
       {/* Full Leaderboard Stats Modal */}
       <TournamentStatsModal />
+
+      {/* Markdown Report Modal */}
+      <TournamentReportModal isOpen={isReportOpen} onClose={() => setIsReportOpen(false)} />
+
+      {/* Hall of Champions History Modal */}
+      <ChampionsHistoryModal
+        isOpen={isHistoryOpen}
+        history={pastChampions}
+        onClose={() => setIsHistoryOpen(false)}
+        onClearHistory={clearHistory}
+      />
 
       {/* Directory Modal */}
       <CountryDirectory />
 
       {/* Footer */}
-      <footer className="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500">
+      <footer className="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500 space-y-2">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>Cricket World Cup Knockout Simulator</span>
-          <span>REST Countries v5 API • T20 Scorecards • H2H Predictor & Pitch Conditions</span>
+          <span>REST Countries v5 API • Ball-by-Ball Live Sim • Playing XI Squads • Hall of Champions</span>
         </div>
+        <p className="text-[11px] text-amber-400/70 font-mono text-center">
+          ⚠️ Disclaimer: All player names, ratings, and match performances are procedurally simulated for tournament play and may be incorrect or fictional.
+        </p>
       </footer>
 
     </div>

@@ -214,6 +214,10 @@ export const HeadToHeadModal: React.FC<HeadToHeadModalProps> = ({ isOpen, onClos
               </motion.div>
             )}
 
+            <div className="pt-1 text-center text-[10px] text-amber-400/70 font-mono pb-2">
+              ⚠️ Disclaimer: Head-to-Head series predictions are procedurally simulated and may be incorrect or fictional.
+            </div>
+
           </div>
         </motion.div>
       </div>

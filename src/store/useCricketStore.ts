@@ -1,7 +1,46 @@
 import { create } from 'zustand';
-import { Country, CricketTournament, CricketTournamentSize, CricketMatch, PitchType } from '../types/cricket';
+import { Country, CricketTournament, CricketTournamentSize, CricketMatch, PitchType, PastChampionRecord } from '../types/cricket';
 import { fetchRestCountriesV5 } from '../services/restCountriesApi';
 import { startNewCricketTournament, advanceCricketRound } from '../engine/cricketEngine';
+
+const PAST_CHAMPIONS_KEY = 'cricket_past_champions_v1';
+
+function saveTournamentToHistory(tourney: CricketTournament, existingHistory: PastChampionRecord[]): PastChampionRecord[] {
+  if (!tourney.champion) return existingHistory;
+
+  const record: PastChampionRecord = {
+    id: tourney.id,
+    tournamentName: tourney.name,
+    champion: tourney.champion,
+    runnerUp: tourney.runnerUp,
+    orangeCapPlayer: tourney.awards?.orangeCap?.player,
+    orangeCapTeam: tourney.awards?.orangeCap?.team.name,
+    orangeCapRuns: tourney.awards?.orangeCap?.runs,
+    purpleCapPlayer: tourney.awards?.purpleCap?.player,
+    purpleCapTeam: tourney.awards?.purpleCap?.team.name,
+    purpleCapWickets: tourney.awards?.purpleCap?.wickets,
+    date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+  };
+
+  // Avoid duplicates
+  const filtered = existingHistory.filter(h => h.id !== record.id);
+  const updated = [record, ...filtered];
+  try {
+    localStorage.setItem(PAST_CHAMPIONS_KEY, JSON.stringify(updated));
+  } catch (e) {
+    console.error('Failed to save past champions to localStorage:', e);
+  }
+  return updated;
+}
+
+function loadHistoryFromStorage(): PastChampionRecord[] {
+  try {
+    const raw = localStorage.getItem(PAST_CHAMPIONS_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    return [];
+  }
+}
 
 interface CricketState {
   allCountries: Country[];
@@ -13,6 +52,7 @@ interface CricketState {
   isDirectoryOpen: boolean;
   isStatsOpen: boolean;
   selectedMatch: CricketMatch | null;
+  pastChampions: PastChampionRecord[];
 
   // Actions
   loadCountries: () => Promise<void>;
@@ -25,6 +65,7 @@ interface CricketState {
   toggleDirectory: (open?: boolean) => void;
   toggleStats: (open?: boolean) => void;
   setSelectedMatch: (match: CricketMatch | null) => void;
+  clearHistory: () => void;
 }
 
 export const useCricketStore = create<CricketState>((set, get) => ({
@@ -37,6 +78,7 @@ export const useCricketStore = create<CricketState>((set, get) => ({
   isDirectoryOpen: false,
   isStatsOpen: false,
   selectedMatch: null,
+  pastChampions: loadHistoryFromStorage(),
 
   loadCountries: async () => {
     set({ isLoadingCountries: true });
@@ -45,7 +87,8 @@ export const useCricketStore = create<CricketState>((set, get) => ({
       set({
         allCountries,
         sovereignCountries,
-        isLoadingCountries: false
+        isLoadingCountries: false,
+        pastChampions: loadHistoryFromStorage()
       });
     } catch (e) {
       console.error('Error loading countries in store:', e);
@@ -64,21 +107,29 @@ export const useCricketStore = create<CricketState>((set, get) => ({
   },
 
   nextRound: () => {
-    const { currentTournament } = get();
+    const { currentTournament, pastChampions } = get();
     if (!currentTournament || currentTournament.status === 'COMPLETED') return;
     const updated = advanceCricketRound(currentTournament);
-    set({ currentTournament: updated });
+    
+    let newHistory = pastChampions;
+    if (updated.status === 'COMPLETED') {
+      newHistory = saveTournamentToHistory(updated, pastChampions);
+    }
+
+    set({ currentTournament: updated, pastChampions: newHistory });
   },
 
   simulateAllRounds: () => {
-    let { currentTournament } = get();
+    let { currentTournament, pastChampions } = get();
     if (!currentTournament || currentTournament.status === 'COMPLETED') return;
     
     let updated = currentTournament;
     while (updated.status !== 'COMPLETED') {
       updated = advanceCricketRound(updated);
     }
-    set({ currentTournament: updated });
+
+    const newHistory = saveTournamentToHistory(updated, pastChampions);
+    set({ currentTournament: updated, pastChampions: newHistory });
   },
 
   resetTournament: () => {
@@ -97,5 +148,12 @@ export const useCricketStore = create<CricketState>((set, get) => ({
     }));
   },
 
-  setSelectedMatch: (selectedMatch) => set({ selectedMatch })
+  setSelectedMatch: (selectedMatch) => set({ selectedMatch }),
+
+  clearHistory: () => {
+    try {
+      localStorage.removeItem(PAST_CHAMPIONS_KEY);
+    } catch (e) {}
+    set({ pastChampions: [] });
+  }
 }));

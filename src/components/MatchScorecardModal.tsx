@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useCricketStore } from '../store/useCricketStore';
 import { X, Award, Flame, Shield, Zap, Sparkles } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { soundFx } from '../utils/soundFx';
 
 export const MatchScorecardModal: React.FC = () => {
   const { selectedMatch, setSelectedMatch } = useCricketStore();
+
+  useEffect(() => {
+    if (selectedMatch) {
+      if (selectedMatch.isSuperOver) {
+        soundFx.playSuperOver();
+      } else {
+        soundFx.playSixHit();
+      }
+    }
+  }, [selectedMatch]);
 
   if (!selectedMatch) return null;
 
@@ -176,8 +187,8 @@ export const MatchScorecardModal: React.FC = () => {
               </div>
             )}
 
-            <div className="pt-1 text-center text-[11px] text-slate-500 font-mono pb-2">
-              Click Close button above to return to tournament bracket.
+            <div className="pt-1 text-center text-[10px] text-amber-400/70 font-mono pb-2">
+              ⚠️ Disclaimer: Player names and scores are procedurally simulated for tournament representation and may be incorrect or fictional.
             </div>
           </div>
         </motion.div>

@@ -103,6 +103,20 @@ export interface CricketAwards {
   totalMatches: number;
 }
 
+export interface PastChampionRecord {
+  id: string;
+  tournamentName: string;
+  champion: Country;
+  runnerUp?: Country;
+  orangeCapPlayer?: string;
+  orangeCapTeam?: string;
+  orangeCapRuns?: number;
+  purpleCapPlayer?: string;
+  purpleCapTeam?: string;
+  purpleCapWickets?: number;
+  date: string;
+}
+
 export interface CricketTournament {
   id: string;
   name: string;

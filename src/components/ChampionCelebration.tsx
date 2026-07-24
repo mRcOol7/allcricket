@@ -3,6 +3,7 @@ import { CricketTournament } from '../types/cricket';
 import { Trophy, RefreshCw, Sparkles, Award, Shield, Flame } from 'lucide-react';
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
+import { soundFx } from '../utils/soundFx';
 
 interface ChampionCelebrationProps {
   tournament: CricketTournament;
@@ -18,6 +19,8 @@ export const ChampionCelebration: React.FC<ChampionCelebrationProps> = ({
   const awards = tournament.awards;
 
   useEffect(() => {
+    soundFx.playFanfare();
+
     const count = 200;
     const defaults = { origin: { y: 0.7 } };
 
@@ -168,6 +171,10 @@ export const ChampionCelebration: React.FC<ChampionCelebrationProps> = ({
           <RefreshCw className="w-4 h-4" />
           <span>Start New Cricket Tournament</span>
         </button>
+
+        <p className="text-[10px] text-amber-400/70 font-mono text-center pt-1">
+          ⚠️ Disclaimer: World Cup champion results, player awards, and scores are procedurally simulated for tournament representation and may be incorrect or fictional.
+        </p>
       </motion.div>
     </div>
   );

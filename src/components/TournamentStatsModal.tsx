@@ -136,8 +136,8 @@ export const TournamentStatsModal: React.FC = () => {
 
           </div>
 
-          <div className="pt-2 text-center text-xs text-slate-500 pb-2">
-            Stats update automatically after every simulated round.
+          <div className="pt-2 text-center text-[10px] text-amber-400/70 font-mono pb-2">
+            ⚠️ Disclaimer: All leaderboards, player names, and statistics are procedurally simulated for tournament play and may be incorrect or fictional.
           </div>
           </div>
         </motion.div>

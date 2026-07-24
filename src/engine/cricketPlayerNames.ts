@@ -103,3 +103,67 @@ export function getRandomCricketBowler(countryId: string, region: string): strin
   const regList = (CRICKET_REGIONAL_BANKS[regKey] || CRICKET_REGIONAL_BANKS.Asia).bowlers;
   return regList[Math.floor(Math.random() * regList.length)];
 }
+
+export interface CricketPlayerProfile {
+  name: string;
+  role: 'Batter' | 'Wicket Keeper' | 'All-Rounder' | 'Bowler';
+  rating: number; // e.g. 85 - 98
+}
+
+export function getFullPlayingXI(countryId: string, region: string): CricketPlayerProfile[] {
+  const upper = (countryId || '').toUpperCase();
+  let batters: string[] = [];
+  let bowlers: string[] = [];
+
+  if (CRICKET_COUNTRY_BANKS[upper]) {
+    batters = CRICKET_COUNTRY_BANKS[upper].batters;
+    bowlers = CRICKET_COUNTRY_BANKS[upper].bowlers;
+  } else {
+    let regKey = 'Asia';
+    const r = (region || '').toLowerCase();
+    if (r.includes('africa')) regKey = 'Africa';
+    else if (r.includes('asia')) regKey = 'Asia';
+    else if (r.includes('america')) regKey = 'Americas';
+    else if (r.includes('europe')) regKey = 'Europe';
+    else if (r.includes('oceania')) regKey = 'Oceania';
+
+    batters = CRICKET_REGIONAL_BANKS[regKey]?.batters || CRICKET_REGIONAL_BANKS.Asia.batters;
+    bowlers = CRICKET_REGIONAL_BANKS[regKey]?.bowlers || CRICKET_REGIONAL_BANKS.Asia.bowlers;
+  }
+
+  const squad: CricketPlayerProfile[] = [];
+  
+  // Top 5 Batters
+  for (let i = 0; i < 5; i++) {
+    const name = batters[i % batters.length] || `Batter ${i + 1}`;
+    squad.push({
+      name,
+      role: i === 1 ? 'Wicket Keeper' : 'Batter',
+      rating: 84 + Math.floor(Math.random() * 14)
+    });
+  }
+
+  // 2 All-Rounders
+  squad.push({
+    name: batters[5 % batters.length] || 'All Rounder 1',
+    role: 'All-Rounder',
+    rating: 83 + Math.floor(Math.random() * 12)
+  });
+  squad.push({
+    name: bowlers[0 % bowlers.length] || 'All Rounder 2',
+    role: 'All-Rounder',
+    rating: 82 + Math.floor(Math.random() * 12)
+  });
+
+  // 4 Bowlers
+  for (let i = 1; i <= 4; i++) {
+    const name = bowlers[i % bowlers.length] || `Bowler ${i}`;
+    squad.push({
+      name,
+      role: 'Bowler',
+      rating: 83 + Math.floor(Math.random() * 14)
+    });
+  }
+
+  return squad;
+}

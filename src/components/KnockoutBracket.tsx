@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { CricketTournament, CricketRound, CricketMatch } from '../types/cricket';
+import { CricketTournament, CricketRound, CricketMatch, Country } from '../types/cricket';
 import { useCricketStore } from '../store/useCricketStore';
-import { Trophy, ChevronRight, CheckCircle2, Target, Shield, Activity, Flame, Search, FastForward, BarChart3 } from 'lucide-react';
+import { TeamProfileModal } from './TeamProfileModal';
+import { Trophy, ChevronRight, CheckCircle2, Target, Shield, Activity, Flame, Search, FastForward, BarChart3, UserCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface KnockoutBracketProps {
@@ -17,6 +18,7 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
 }) => {
   const [selectedRoundIdx, setSelectedRoundIdx] = useState<number>(tournament.currentRoundIndex);
   const [searchQuery, setSearchQuery] = useState<string>('');
+  const [profileCountry, setProfileCountry] = useState<Country | null>(null);
 
   const { setSelectedMatch, toggleStats, simulateAllRounds } = useCricketStore();
 
@@ -143,7 +145,7 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
                 </span>
               </div>
               <p className="text-xs text-slate-400">
-                Round {selectedRoundIdx + 1} of {tournament.rounds.length} • Click any match card to open full scorecard
+                Round {selectedRoundIdx + 1} of {tournament.rounds.length} • Click match card for scorecard or team flag for Playing XI squad
               </p>
             </div>
           </div>
@@ -230,7 +232,12 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
         >
           {filteredMatches.length > 0 ? (
             filteredMatches.map((match) => (
-              <MatchCard key={match.id} match={match} onClick={() => setSelectedMatch(match)} />
+              <MatchCard
+                key={match.id}
+                match={match}
+                onClick={() => setSelectedMatch(match)}
+                onSelectCountry={(c) => setProfileCountry(c)}
+              />
             ))
           ) : (
             <div className="col-span-full py-12 text-center space-y-2 bg-slate-900/40 border border-slate-800 rounded-2xl">
@@ -240,6 +247,9 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
           )}
         </motion.div>
       </AnimatePresence>
+
+      {/* Playing XI Team Profile Modal */}
+      <TeamProfileModal country={profileCountry} onClose={() => setProfileCountry(null)} />
     </div>
   );
 };
@@ -247,21 +257,32 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
 interface MatchCardProps {
   match: CricketMatch;
   onClick?: () => void;
+  onSelectCountry?: (country: Country) => void;
 }
 
-const MatchCard: React.FC<MatchCardProps> = ({ match, onClick }) => {
+const MatchCard: React.FC<MatchCardProps> = ({ match, onClick, onSelectCountry }) => {
   const homeWins = match.winnerId === match.homeTeam.id;
   const awayWins = match.winnerId === match.awayTeam.id;
+
+  const handleCountryClick = (e: React.MouseEvent, country: Country) => {
+    if (onSelectCountry) {
+      e.stopPropagation();
+      onSelectCountry(country);
+    }
+  };
 
   if (match.isBye) {
     return (
       <div className="bg-slate-900/40 backdrop-blur-md border border-slate-800/60 rounded-xl p-3.5 flex items-center justify-between">
-        <div className="flex items-center space-x-3">
+        <div
+          onClick={(e) => handleCountryClick(e, match.homeTeam)}
+          className="flex items-center space-x-3 cursor-pointer hover:text-emerald-400 transition"
+        >
           {match.homeTeam.flagUrl ? (
             <img
               src={match.homeTeam.flagUrl}
               alt={match.homeTeam.name}
-              className="w-7 h-5 object-cover rounded shadow-sm"
+              className="w-7 h-5 object-cover rounded shadow-sm hover:scale-105 transition"
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
             />
           ) : (
@@ -290,18 +311,22 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onClick }) => {
             : 'bg-slate-950/40 text-slate-400'
         }`}
       >
-        <div className="flex items-center space-x-2.5 min-w-0">
+        <div
+          onClick={(e) => handleCountryClick(e, match.homeTeam)}
+          className="flex items-center space-x-2.5 min-w-0 cursor-pointer hover:opacity-90 transition"
+          title="Click to view Playing XI squad"
+        >
           {match.homeTeam.flagUrl ? (
             <img
               src={match.homeTeam.flagUrl}
               alt={match.homeTeam.name}
-              className="w-7 h-5 object-cover rounded shadow border border-slate-700 flex-shrink-0"
+              className="w-7 h-5 object-cover rounded shadow border border-slate-700 flex-shrink-0 hover:scale-110 transition"
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
             />
           ) : (
             <span className="text-base flex-shrink-0">{match.homeTeam.emoji}</span>
           )}
-          <span className="text-xs sm:text-sm font-semibold truncate">
+          <span className="text-xs sm:text-sm font-semibold truncate hover:underline">
             {match.homeTeam.name}
           </span>
           <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 flex-shrink-0">
@@ -355,18 +380,22 @@ const MatchCard: React.FC<MatchCardProps> = ({ match, onClick }) => {
             : 'bg-slate-950/40 text-slate-400'
         }`}
       >
-        <div className="flex items-center space-x-2.5 min-w-0">
+        <div
+          onClick={(e) => handleCountryClick(e, match.awayTeam)}
+          className="flex items-center space-x-2.5 min-w-0 cursor-pointer hover:opacity-90 transition"
+          title="Click to view Playing XI squad"
+        >
           {match.awayTeam.flagUrl ? (
             <img
               src={match.awayTeam.flagUrl}
               alt={match.awayTeam.name}
-              className="w-7 h-5 object-cover rounded shadow border border-slate-700 flex-shrink-0"
+              className="w-7 h-5 object-cover rounded shadow border border-slate-700 flex-shrink-0 hover:scale-110 transition"
               onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
             />
           ) : (
             <span className="text-base flex-shrink-0">{match.awayTeam.emoji}</span>
           )}
-          <span className="text-xs sm:text-sm font-semibold truncate">
+          <span className="text-xs sm:text-sm font-semibold truncate hover:underline">
             {match.awayTeam.name}
           </span>
           <span className="text-[10px] font-mono px-1.5 py-0.2 rounded bg-slate-800 text-slate-400 flex-shrink-0">

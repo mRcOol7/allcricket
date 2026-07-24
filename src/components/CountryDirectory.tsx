@@ -145,8 +145,11 @@ export const CountryDirectory: React.FC = () => {
             ))}
           </div>
 
-          <div className="p-3 border-t border-slate-800 bg-slate-950 text-center text-xs text-slate-500">
-            Showing {filteredCountries.length} of {allCountries.length} Cricket World Cup Nations
+          <div className="p-3 border-t border-slate-800 bg-slate-950 text-center text-xs text-slate-500 space-y-1">
+            <div>Showing {filteredCountries.length} of {allCountries.length} Cricket World Cup Nations</div>
+            <div className="text-[10px] text-amber-400/70 font-mono">
+              ⚠️ Disclaimer: Country data & codes are fetched via REST Countries v5 API for simulation representation.
+            </div>
           </div>
         </motion.div>
       </div>
