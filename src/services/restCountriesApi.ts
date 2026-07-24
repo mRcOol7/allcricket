@@ -5,7 +5,7 @@ const REST_COUNTRIES_V5_DIRECT = 'https://api.restcountries.com/countries/v5';
 const REST_COUNTRIES_V5_PROXY = '/api-restcountries/countries/v5';
 
 // Read API token strictly from environment variable (.env)
-const RAW_ENV_TOKEN = import.meta.env.VITE_REST_COUNTRIES_BEARER_TOKEN || '';
+const RAW_ENV_TOKEN = (import.meta as any).env?.VITE_REST_COUNTRIES_BEARER_TOKEN || '';
 const BEARER_TOKEN = RAW_ENV_TOKEN
   ? (RAW_ENV_TOKEN.startsWith('Bearer ') ? RAW_ENV_TOKEN : `Bearer ${RAW_ENV_TOKEN}`)
   : '';
