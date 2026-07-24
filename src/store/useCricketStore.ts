@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import { Country, CricketTournament, CricketTournamentSize } from '../types/cricket';
+import { Country, CricketTournament, CricketTournamentSize, CricketMatch, PitchType } from '../types/cricket';
 import { fetchRestCountriesV5 } from '../services/restCountriesApi';
 import { startNewCricketTournament, advanceCricketRound } from '../engine/cricketEngine';
 
@@ -9,15 +9,22 @@ interface CricketState {
   isLoadingCountries: boolean;
   currentTournament: CricketTournament | null;
   bracketSize: CricketTournamentSize;
+  pitchType: PitchType;
   isDirectoryOpen: boolean;
+  isStatsOpen: boolean;
+  selectedMatch: CricketMatch | null;
 
   // Actions
   loadCountries: () => Promise<void>;
   setBracketSize: (size: CricketTournamentSize) => void;
+  setPitchType: (pitch: PitchType) => void;
   startTournament: () => void;
   nextRound: () => void;
+  simulateAllRounds: () => void;
   resetTournament: () => void;
   toggleDirectory: (open?: boolean) => void;
+  toggleStats: (open?: boolean) => void;
+  setSelectedMatch: (match: CricketMatch | null) => void;
 }
 
 export const useCricketStore = create<CricketState>((set, get) => ({
@@ -26,7 +33,10 @@ export const useCricketStore = create<CricketState>((set, get) => ({
   isLoadingCountries: false,
   currentTournament: null,
   bracketSize: 256,
+  pitchType: 'BALANCED',
   isDirectoryOpen: false,
+  isStatsOpen: false,
+  selectedMatch: null,
 
   loadCountries: async () => {
     set({ isLoadingCountries: true });
@@ -44,11 +54,12 @@ export const useCricketStore = create<CricketState>((set, get) => ({
   },
 
   setBracketSize: (bracketSize) => set({ bracketSize }),
+  setPitchType: (pitchType) => set({ pitchType }),
 
   startTournament: () => {
-    const { sovereignCountries, allCountries, bracketSize } = get();
+    const { sovereignCountries, allCountries, bracketSize, pitchType } = get();
     if (sovereignCountries.length === 0 && allCountries.length === 0) return;
-    const tourney = startNewCricketTournament(sovereignCountries, allCountries, bracketSize);
+    const tourney = startNewCricketTournament(sovereignCountries, allCountries, bracketSize, pitchType);
     set({ currentTournament: tourney });
   },
 
@@ -59,13 +70,32 @@ export const useCricketStore = create<CricketState>((set, get) => ({
     set({ currentTournament: updated });
   },
 
+  simulateAllRounds: () => {
+    let { currentTournament } = get();
+    if (!currentTournament || currentTournament.status === 'COMPLETED') return;
+    
+    let updated = currentTournament;
+    while (updated.status !== 'COMPLETED') {
+      updated = advanceCricketRound(updated);
+    }
+    set({ currentTournament: updated });
+  },
+
   resetTournament: () => {
-    set({ currentTournament: null });
+    set({ currentTournament: null, selectedMatch: null });
   },
 
   toggleDirectory: (open) => {
     set((state) => ({
       isDirectoryOpen: open !== undefined ? open : !state.isDirectoryOpen
     }));
-  }
+  },
+
+  toggleStats: (open) => {
+    set((state) => ({
+      isStatsOpen: open !== undefined ? open : !state.isStatsOpen
+    }));
+  },
+
+  setSelectedMatch: (selectedMatch) => set({ selectedMatch })
 }));

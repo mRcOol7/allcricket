@@ -1,25 +1,32 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useCricketStore } from './store/useCricketStore';
 import { KnockoutBracket } from './components/KnockoutBracket';
 import { CountryDirectory } from './components/CountryDirectory';
 import { ChampionCelebration } from './components/ChampionCelebration';
-import { CricketTournamentSize } from './types/cricket';
-import { Trophy, Globe, Play, ChevronRight, ShieldCheck, Sparkles } from 'lucide-react';
+import { MatchScorecardModal } from './components/MatchScorecardModal';
+import { TournamentStatsModal } from './components/TournamentStatsModal';
+import { HeadToHeadModal } from './components/HeadToHeadModal';
+import { CricketTournamentSize, PitchType } from './types/cricket';
+import { Globe, Play, ShieldCheck, Sparkles, BarChart3, Swords } from 'lucide-react';
 
 export const App: React.FC = () => {
   const {
     allCountries,
-    sovereignCountries,
     isLoadingCountries,
     currentTournament,
     bracketSize,
+    pitchType,
     loadCountries,
     setBracketSize,
+    setPitchType,
     startTournament,
     nextRound,
     resetTournament,
-    toggleDirectory
+    toggleDirectory,
+    toggleStats
   } = useCricketStore();
+
+  const [isH2HOpen, setIsH2HOpen] = useState(false);
 
   useEffect(() => {
     loadCountries();
@@ -68,19 +75,37 @@ export const App: React.FC = () => {
                 Cricket World Cup Knockout Simulator
               </h1>
               <p className="text-[11px] text-slate-400 hidden sm:block">
-                REST Countries v5 • T20 Cricket Score & Super Over Simulation
+                REST Countries v5 • T20 Scorecards • H2H Predictor & Pitch Conditions
               </p>
             </div>
           </div>
 
-          {/* Directory Drawer Trigger */}
-          <div className="flex items-center space-x-3">
+          {/* Action Header Triggers */}
+          <div className="flex items-center space-x-2">
+            <button
+              onClick={() => setIsH2HOpen(true)}
+              className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-emerald-400 flex items-center space-x-1.5 transition"
+            >
+              <Swords className="w-4 h-4" />
+              <span className="hidden sm:inline font-medium">Head-to-Head</span>
+            </button>
+
+            {currentTournament && (
+              <button
+                onClick={() => toggleStats(true)}
+                className="px-3 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-amber-400 flex items-center space-x-1.5 transition"
+              >
+                <BarChart3 className="w-4 h-4" />
+                <span className="hidden sm:inline font-medium">Stats</span>
+              </button>
+            )}
+
             <button
               onClick={() => toggleDirectory(true)}
               className="px-3.5 py-1.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-800 text-xs text-slate-300 flex items-center space-x-2 transition"
             >
               <Globe className="w-4 h-4 text-emerald-400" />
-              <span className="hidden sm:inline font-medium">Browse All Nations</span>
+              <span className="hidden sm:inline font-medium">Nations</span>
               <span className="px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 font-mono text-[10px] border border-emerald-500/30">
                 {allCountries.length}
               </span>
@@ -104,11 +129,11 @@ export const App: React.FC = () => {
                 Simulate 256-Team Mega Cricket World Cup
               </h2>
               <p className="text-sm text-slate-400 leading-relaxed">
-                Every nation and territory plays in Round 1. 128 simultaneous T20 cricket matches in the Round of 256 with Super Overs for ties!
+                Every nation and territory plays in Round 1. Choose pitch conditions, track ball-by-ball scorecards, and watch Super Over tie-breakers!
               </p>
             </div>
 
-            {/* Bracket Size Controls */}
+            {/* Bracket & Pitch Controls */}
             <div className="max-w-md mx-auto bg-slate-950/70 border border-slate-800 rounded-2xl p-5 space-y-4">
               <div className="space-y-1.5 text-left">
                 <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
@@ -131,6 +156,22 @@ export const App: React.FC = () => {
                   <option value={32}>
                     32 Teams Bracket (16 Matches in R1)
                   </option>
+                </select>
+              </div>
+
+              <div className="space-y-1.5 text-left">
+                <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                  Pitch & Venue Conditions
+                </label>
+                <select
+                  value={pitchType}
+                  onChange={(e) => setPitchType(e.target.value as PitchType)}
+                  className="w-full bg-slate-900 border border-slate-800 rounded-xl px-3.5 py-2.5 text-xs font-medium text-slate-200 focus:outline-none focus:border-emerald-500 transition"
+                >
+                  <option value="BALANCED">⚖️ Balanced Pitch (140 - 180 runs)</option>
+                  <option value="HIGH_SCORING">💥 Batter Paradise (180 - 230 runs)</option>
+                  <option value="BOWLING_GREEN">⚡ Seam & Pace Heavy (110 - 150 runs)</option>
+                  <option value="SPIN_PARADISE">🌀 Turning Track (120 - 160 runs)</option>
                 </select>
               </div>
 
@@ -182,6 +223,15 @@ export const App: React.FC = () => {
         <ChampionCelebration tournament={currentTournament} onRestart={resetTournament} />
       )}
 
+      {/* Interactive Match Scorecard Modal */}
+      <MatchScorecardModal />
+
+      {/* Head to Head Series Predictor Modal */}
+      <HeadToHeadModal isOpen={isH2HOpen} onClose={() => setIsH2HOpen(false)} />
+
+      {/* Full Leaderboard Stats Modal */}
+      <TournamentStatsModal />
+
       {/* Directory Modal */}
       <CountryDirectory />
 
@@ -189,7 +239,7 @@ export const App: React.FC = () => {
       <footer className="border-t border-slate-800/80 bg-slate-950 py-6 text-center text-xs text-slate-500">
         <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>Cricket World Cup Knockout Simulator</span>
-          <span>REST Countries v5 API • T20 Cricket Scores • Super Over Tie-Breakers</span>
+          <span>REST Countries v5 API • T20 Scorecards • H2H Predictor & Pitch Conditions</span>
         </div>
       </footer>
 

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { CricketTournament, CricketRound, CricketMatch } from '../types/cricket';
-import { Trophy, ChevronRight, CheckCircle2, Target, Shield, Activity, Flame } from 'lucide-react';
+import { useCricketStore } from '../store/useCricketStore';
+import { Trophy, ChevronRight, CheckCircle2, Target, Shield, Activity, Flame, Search, FastForward, BarChart3 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface KnockoutBracketProps {
@@ -15,6 +16,9 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
   onReset
 }) => {
   const [selectedRoundIdx, setSelectedRoundIdx] = useState<number>(tournament.currentRoundIndex);
+  const [searchQuery, setSearchQuery] = useState<string>('');
+
+  const { setSelectedMatch, toggleStats, simulateAllRounds } = useCricketStore();
 
   useEffect(() => {
     setSelectedRoundIdx(tournament.currentRoundIndex);
@@ -25,12 +29,24 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
   const isCompleted = tournament.status === 'COMPLETED';
   const awards = tournament.awards;
 
+  // Filter matches by country search query
+  const filteredMatches = (currentRound?.matches || []).filter((match) => {
+    if (!searchQuery.trim()) return true;
+    const q = searchQuery.toLowerCase();
+    return (
+      match.homeTeam.name.toLowerCase().includes(q) ||
+      match.awayTeam.name.toLowerCase().includes(q) ||
+      match.homeTeam.isoCode.toLowerCase().includes(q) ||
+      match.awayTeam.isoCode.toLowerCase().includes(q)
+    );
+  });
+
   return (
     <div className="space-y-6">
       
-      {/* Cricket Stats Header Banner (Orange Cap & Purple Cap) */}
+      {/* Cricket Stats Header Banner (Orange Cap & Purple Cap & Leaderboard Button) */}
       {awards && (
-        <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-3.5 shadow-lg grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs">
+        <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800/80 rounded-2xl p-3.5 shadow-lg grid grid-cols-1 sm:grid-cols-4 gap-3 text-xs items-center">
           
           {/* Orange Cap (Top Batter) */}
           <div className="flex items-center space-x-3 bg-slate-950/60 border border-slate-800 rounded-xl p-2.5">
@@ -43,7 +59,7 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
               </span>
               <div className="flex items-center justify-between">
                 <span className="font-bold text-slate-100 truncate">
-                  {awards.orangeCap ? `${awards.orangeCap.player} (${awards.orangeCap.team.fifaCode || awards.orangeCap.team.isoCode})` : 'N/A'}
+                  {awards.orangeCap ? `${awards.orangeCap.player}` : 'N/A'}
                 </span>
                 {awards.orangeCap && (
                   <span className="px-1.5 py-0.5 rounded bg-amber-500/20 text-amber-300 font-mono font-bold text-[10px]">
@@ -65,7 +81,7 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
               </span>
               <div className="flex items-center justify-between">
                 <span className="font-bold text-slate-100 truncate">
-                  {awards.purpleCap ? `${awards.purpleCap.player} (${awards.purpleCap.team.fifaCode || awards.purpleCap.team.isoCode})` : 'N/A'}
+                  {awards.purpleCap ? `${awards.purpleCap.player}` : 'N/A'}
                 </span>
                 {awards.purpleCap && (
                   <span className="px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 font-mono font-bold text-[10px]">
@@ -83,24 +99,33 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
             </div>
             <div className="min-w-0 flex-1">
               <span className="text-[10px] uppercase font-bold text-emerald-400 tracking-wider block">
-                Tournament Summary
+                Tournament Totals
               </span>
               <div className="flex items-center justify-between">
                 <span className="font-bold text-slate-100 truncate">
-                  {awards.totalMatches} Matches Played
+                  {awards.totalMatches} Matches
                 </span>
                 <span className="px-1.5 py-0.5 rounded bg-emerald-500/20 text-emerald-300 font-mono font-bold text-[10px]">
-                  {awards.totalRuns} Runs / {awards.totalWickets} Wkts
+                  {awards.totalSixes}x6 • {awards.totalFours}x4
                 </span>
               </div>
             </div>
           </div>
 
+          {/* Full Leaderboards Trigger */}
+          <button
+            onClick={() => toggleStats(true)}
+            className="w-full h-full min-h-[44px] px-3.5 py-2 rounded-xl bg-gradient-to-r from-amber-500/20 via-purple-500/20 to-emerald-500/20 border border-amber-500/40 hover:border-amber-400 text-amber-300 font-bold text-xs flex items-center justify-center space-x-2 transition shadow-md"
+          >
+            <BarChart3 className="w-4 h-4 text-amber-400" />
+            <span>Open Stats Leaderboard</span>
+          </button>
+
         </div>
       )}
 
       {/* Round Selection Tabs & Header */}
-      <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 shadow-xl">
+      <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-2xl p-4 shadow-xl space-y-4">
         <div className="flex flex-col md:flex-row items-center justify-between gap-4">
           
           {/* Round Title */}
@@ -114,28 +139,51 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
                   {currentRound ? currentRound.name : 'Knockout Round'}
                 </h2>
                 <span className="px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 text-xs font-mono border border-slate-700">
-                  {currentRound?.matches.length || 0} Matches
+                  {filteredMatches.length} / {currentRound?.matches.length || 0} Matches
                 </span>
               </div>
               <p className="text-xs text-slate-400">
-                Round {selectedRoundIdx + 1} of {tournament.rounds.length} • All cricket matches simulated simultaneously
+                Round {selectedRoundIdx + 1} of {tournament.rounds.length} • Click any match card to open full scorecard
               </p>
             </div>
           </div>
 
-          {/* Actions */}
-          <div className="flex items-center space-x-3 w-full md:w-auto justify-end">
+          {/* Search & Actions */}
+          <div className="flex flex-wrap items-center space-x-2 w-full md:w-auto justify-end gap-2">
+            {/* Search Input */}
+            <div className="relative flex-1 sm:w-48">
+              <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-2.5" />
+              <input
+                type="text"
+                placeholder="Search nation..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full bg-slate-950/80 border border-slate-800 rounded-xl pl-9 pr-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500 transition"
+              />
+            </div>
+
             <button
               onClick={onReset}
-              className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition"
+              className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-semibold border border-slate-700 transition"
             >
-              Reset Tournament
+              Reset
             </button>
+
+            {!isCompleted && (
+              <button
+                onClick={simulateAllRounds}
+                className="px-3.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 hover:text-amber-300 text-xs font-semibold border border-amber-500/30 flex items-center space-x-1.5 transition"
+                title="Instant auto-simulate all remaining rounds to final champion"
+              >
+                <FastForward className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Simulate All</span>
+              </button>
+            )}
 
             {!isCompleted && isLatestRound && (
               <button
                 onClick={onNextRound}
-                className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-xs shadow-lg shadow-emerald-500/20 flex items-center space-x-2 transition transform active:scale-95"
+                className="px-4 py-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 font-bold text-xs shadow-lg shadow-emerald-500/20 flex items-center space-x-2 transition transform active:scale-95"
               >
                 <span>Next Round</span>
                 <ChevronRight className="w-4 h-4" />
@@ -145,7 +193,7 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
         </div>
 
         {/* Round Navigation Bar */}
-        <div className="mt-4 pt-3 border-t border-slate-800/80 flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-thin">
+        <div className="pt-3 border-t border-slate-800/80 flex items-center space-x-2 overflow-x-auto pb-1 scrollbar-thin">
           {tournament.rounds.map((r, idx) => {
             const isActive = idx === selectedRoundIdx;
             const isCurrent = idx === tournament.currentRoundIndex;
@@ -180,9 +228,16 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
           transition={{ duration: 0.2 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
         >
-          {currentRound?.matches.map((match) => (
-            <MatchCard key={match.id} match={match} />
-          ))}
+          {filteredMatches.length > 0 ? (
+            filteredMatches.map((match) => (
+              <MatchCard key={match.id} match={match} onClick={() => setSelectedMatch(match)} />
+            ))
+          ) : (
+            <div className="col-span-full py-12 text-center space-y-2 bg-slate-900/40 border border-slate-800 rounded-2xl">
+              <Search className="w-8 h-8 text-slate-600 mx-auto" />
+              <p className="text-sm font-semibold text-slate-400">No nations matching "{searchQuery}" in this round</p>
+            </div>
+          )}
         </motion.div>
       </AnimatePresence>
     </div>
@@ -191,9 +246,10 @@ export const KnockoutBracket: React.FC<KnockoutBracketProps> = ({
 
 interface MatchCardProps {
   match: CricketMatch;
+  onClick?: () => void;
 }
 
-const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
+const MatchCard: React.FC<MatchCardProps> = ({ match, onClick }) => {
   const homeWins = match.winnerId === match.homeTeam.id;
   const awayWins = match.winnerId === match.awayTeam.id;
 
@@ -221,7 +277,10 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
   }
 
   return (
-    <div className="bg-slate-900/70 backdrop-blur-xl border border-slate-800 hover:border-slate-700/80 rounded-xl p-3.5 shadow-lg transition flex flex-col justify-between space-y-3">
+    <div
+      onClick={onClick}
+      className="bg-slate-900/70 backdrop-blur-xl border border-slate-800 hover:border-emerald-500/50 hover:shadow-emerald-500/10 rounded-xl p-3.5 shadow-lg transition flex flex-col justify-between space-y-3 cursor-pointer group"
+    >
       
       {/* Home Team Row */}
       <div
@@ -263,7 +322,9 @@ const MatchCard: React.FC<MatchCardProps> = ({ match }) => {
       {/* Match Details & Performers */}
       <div className="space-y-1.5 px-1">
         <div className="flex items-center justify-between text-[11px] text-slate-500 font-mono">
-          <span className="text-slate-600 uppercase tracking-wider text-[10px]">{match.roundName}</span>
+          <span className="text-slate-600 uppercase tracking-wider text-[10px] group-hover:text-emerald-400 transition">
+            {match.roundName} • Click for Scorecard 🔍
+          </span>
           {match.isSuperOver && (
             <span className="px-2 py-0.5 rounded bg-amber-500/10 border border-amber-500/30 text-amber-400 font-medium text-[10px]">
               SUPER OVER ({match.superOverHomeRuns} vs {match.superOverAwayRuns})

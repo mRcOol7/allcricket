@@ -13,14 +13,32 @@ export function getRoundName(totalTeamsInRound: number, isFinal: boolean = false
   return `Round of ${totalTeamsInRound}`;
 }
 
-// Generate realistic T20 Cricket scores & Super Overs
-export function simulateCricketMatch(home: Country, away: Country, roundName: string): CricketMatch {
-  // Realistic T20 score range (130 to 220 runs)
-  const homeRuns = 130 + Math.floor(Math.random() * 85);
+// Generate realistic T20 Cricket scores, commentary & Super Overs
+export function simulateCricketMatch(
+  home: Country,
+  away: Country,
+  roundName: string,
+  pitchType: PitchType = 'BALANCED'
+): CricketMatch {
+  let minScore = 130;
+  let maxScoreRange = 85;
+
+  if (pitchType === 'HIGH_SCORING') {
+    minScore = 175;
+    maxScoreRange = 70;
+  } else if (pitchType === 'BOWLING_GREEN') {
+    minScore = 105;
+    maxScoreRange = 55;
+  } else if (pitchType === 'SPIN_PARADISE') {
+    minScore = 120;
+    maxScoreRange = 60;
+  }
+
+  const homeRuns = minScore + Math.floor(Math.random() * maxScoreRange);
   const homeWickets = Math.min(10, Math.floor(Math.random() * 8) + 2);
   const homeOvers = homeWickets === 10 ? `${Math.floor(Math.random() * 4) + 16}.${Math.floor(Math.random() * 6)}` : '20.0';
 
-  let awayRuns = 130 + Math.floor(Math.random() * 85);
+  let awayRuns = minScore + Math.floor(Math.random() * maxScoreRange);
   let awayWickets = Math.min(10, Math.floor(Math.random() * 8) + 2);
   let awayOvers = '20.0';
 
@@ -55,18 +73,22 @@ export function simulateCricketMatch(home: Country, away: Country, roundName: st
   const topBatterTeam = homeRuns >= awayRuns ? home : away;
   const topBatterRuns = 45 + Math.floor(Math.random() * 45);
   const topBatterBalls = Math.round(topBatterRuns * (0.65 + Math.random() * 0.4));
+  const topBatterFours = Math.floor(topBatterRuns / 14) + Math.floor(Math.random() * 3);
+  const topBatterSixes = Math.floor(topBatterRuns / 22) + Math.floor(Math.random() * 3);
 
   const topBatter: CricketBatterPerf = {
     player: topBatterName,
     teamId: topBatterTeam.id,
     teamName: topBatterTeam.name,
     runs: topBatterRuns,
-    balls: topBatterBalls
+    balls: topBatterBalls,
+    fours: topBatterFours,
+    sixes: topBatterSixes
   };
 
   const winningTeam = winnerId === home.id ? home : away;
   const topBowlerName = getRandomCricketBowler(winningTeam.id, winningTeam.region);
-  const topBowlerWickets = 2 + Math.floor(Math.random() * 3); // 2 to 4 wickets
+  const topBowlerWickets = 2 + Math.floor(Math.random() * 3);
   const topBowlerRunsGiven = 16 + Math.floor(Math.random() * 20);
 
   const topBowler: CricketBowlerPerf = {
@@ -74,8 +96,32 @@ export function simulateCricketMatch(home: Country, away: Country, roundName: st
     teamId: winningTeam.id,
     teamName: winningTeam.name,
     wickets: topBowlerWickets,
-    runsGiven: topBowlerRunsGiven
+    runsGiven: topBowlerRunsGiven,
+    overs: '4.0',
+    economy: parseFloat((topBowlerRunsGiven / 4.0).toFixed(2))
   };
+
+  const potmIsBatter = topBatterRuns >= 60 || topBowlerWickets < 3;
+  const playerOfTheMatch = {
+    player: potmIsBatter ? topBatterName : topBowlerName,
+    teamName: potmIsBatter ? topBatterTeam.name : winningTeam.name,
+    reason: potmIsBatter
+      ? `${topBatterRuns} runs off ${topBatterBalls} balls (${topBatterFours}x4, ${topBatterSixes}x6)`
+      : `${topBowlerWickets} wickets for ${topBowlerRunsGiven} runs (4.0 overs)`
+  };
+
+  // Generate Match Commentary Feed
+  const commentary: string[] = [
+    `Pitch Report (${pitchType}): ${pitchType === 'HIGH_SCORING' ? 'Batter paradise! Expect huge boundaries.' : pitchType === 'BOWLING_GREEN' ? 'Green seaming track favoring pace bowlers.' : pitchType === 'SPIN_PARADISE' ? 'Dry pitch offering sharp turn and bounce.' : 'Balanced T20 pitch with equal help for bat & ball.'}`,
+    `Over 2.4: FOUR! ${topBatterName} finds the boundary gap with a crisp cover drive.`,
+    `Over 9.1: WICKET! ${topBowlerName} strikes! Clean bowled with a lethal yorker!`,
+    `Over 16.3: SIX! Massive hit over deep mid-wicket into the stands!`,
+    `Over 19.6: Final ball drama! ${winningTeam.name} seals victory in ${roundName}!`
+  ];
+
+  if (isSuperOver) {
+    commentary.push(`⚡ SUPER OVER DRAMA: Scores tied after 20 overs! ${winningTeam.name} wins in Super Over (${superOverHomeRuns} vs ${superOverAwayRuns})!`);
+  }
 
   return {
     id: `cricket_match_${home.id}_vs_${away.id}_${Date.now()}_${Math.random().toString(36).substring(2, 6)}`,
@@ -94,17 +140,22 @@ export function simulateCricketMatch(home: Country, away: Country, roundName: st
     status: 'COMPLETED',
     winnerId,
     topBatter,
-    topBowler
+    topBowler,
+    playerOfTheMatch,
+    pitchType,
+    commentary
   };
 }
 
-// Calculate Orange Cap (Top Batter) & Purple Cap (Top Bowler)
+// Calculate Orange Cap (Top Batter) & Purple Cap (Top Bowler) & Full Leaderboards
 export function calculateCricketAwards(tournament: CricketTournament): CricketAwards {
   const batterRunsMap: Record<string, { player: string; team: Country; runs: number }> = {};
   const bowlerWicketsMap: Record<string, { player: string; team: Country; wickets: number }> = {};
 
   let totalRuns = 0;
   let totalWickets = 0;
+  let totalSixes = 0;
+  let totalFours = 0;
   let totalMatches = 0;
 
   tournament.rounds.forEach(round => {
@@ -115,6 +166,8 @@ export function calculateCricketAwards(tournament: CricketTournament): CricketAw
       totalWickets += match.homeWickets + match.awayWickets;
 
       if (match.topBatter) {
+        totalFours += match.topBatter.fours || Math.floor(match.topBatter.runs / 15);
+        totalSixes += match.topBatter.sixes || Math.floor(match.topBatter.runs / 25);
         const team = match.topBatter.teamId === match.homeTeam.id ? match.homeTeam : match.awayTeam;
         const key = `${match.topBatter.teamId}_${match.topBatter.player}`;
         batterRunsMap[key] = batterRunsMap[key]
@@ -141,8 +194,12 @@ export function calculateCricketAwards(tournament: CricketTournament): CricketAw
   return {
     orangeCap,
     purpleCap,
+    topBatters: sortedBatters.slice(0, 5),
+    topBowlers: sortedBowlers.slice(0, 5),
     totalRuns,
     totalWickets,
+    totalSixes,
+    totalFours,
     totalMatches
   };
 }
@@ -155,7 +212,8 @@ const BONUS_WILDCARDS: Country[] = [
 export function startNewCricketTournament(
   sovereignTeams: Country[],
   allFetchedCountries: Country[],
-  size: CricketTournamentSize
+  size: CricketTournamentSize,
+  pitchType: PitchType = 'BALANCED'
 ): CricketTournament {
   let pool: Country[] = [];
 
@@ -189,7 +247,7 @@ export function startNewCricketTournament(
     if (i + 1 < numTeams) {
       const home = shuffled[i];
       const away = shuffled[i + 1];
-      const match = simulateCricketMatch(home, away, r1Name);
+      const match = simulateCricketMatch(home, away, r1Name, pitchType);
       matches.push(match);
     }
   }
@@ -209,6 +267,7 @@ export function startNewCricketTournament(
     rounds: [initialRound],
     currentRoundIndex: 0,
     status: 'IN_PROGRESS',
+    pitchType,
     createdAt: new Date().toISOString()
   };
 
@@ -219,6 +278,7 @@ export function startNewCricketTournament(
 export function advanceCricketRound(tournament: CricketTournament): CricketTournament {
   const updated: CricketTournament = JSON.parse(JSON.stringify(tournament));
   const currentRound = updated.rounds[updated.currentRoundIndex];
+  const pitchType = updated.pitchType || 'BALANCED';
 
   const winners: Country[] = currentRound.matches
     .map(m => (m.winnerId === m.homeTeam.id ? m.homeTeam : m.awayTeam))
@@ -244,7 +304,7 @@ export function advanceCricketRound(tournament: CricketTournament): CricketTourn
     if (i + 1 < nextTeamsCount) {
       const home = winners[i];
       const away = winners[i + 1];
-      const match = simulateCricketMatch(home, away, nextRoundName);
+      const match = simulateCricketMatch(home, away, nextRoundName, pitchType);
       nextMatches.push(match);
     }
   }

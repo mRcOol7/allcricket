@@ -1,3 +1,5 @@
+export type PitchType = 'BALANCED' | 'HIGH_SCORING' | 'BOWLING_GREEN' | 'SPIN_PARADISE';
+
 export interface Country {
   id: string;
   alpha2: string;
@@ -20,6 +22,8 @@ export interface CricketBatterPerf {
   teamName: string;
   runs: number;
   balls: number;
+  fours?: number;
+  sixes?: number;
 }
 
 export interface CricketBowlerPerf {
@@ -28,6 +32,14 @@ export interface CricketBowlerPerf {
   teamName: string;
   wickets: number;
   runsGiven: number;
+  overs?: string;
+  economy?: number;
+}
+
+export interface CricketPlayerOfTheMatch {
+  player: string;
+  teamName: string;
+  reason: string;
 }
 
 export interface CricketMatch {
@@ -49,6 +61,9 @@ export interface CricketMatch {
   isBye?: boolean;
   topBatter?: CricketBatterPerf;
   topBowler?: CricketBowlerPerf;
+  playerOfTheMatch?: CricketPlayerOfTheMatch;
+  pitchType?: PitchType;
+  commentary?: string[];
 }
 
 export interface CricketRound {
@@ -71,8 +86,20 @@ export interface CricketAwards {
     team: Country;
     wickets: number;
   };
+  topBatters?: Array<{
+    player: string;
+    team: Country;
+    runs: number;
+  }>;
+  topBowlers?: Array<{
+    player: string;
+    team: Country;
+    wickets: number;
+  }>;
   totalRuns: number;
   totalWickets: number;
+  totalSixes: number;
+  totalFours: number;
   totalMatches: number;
 }
 
@@ -87,5 +114,6 @@ export interface CricketTournament {
   champion?: Country;
   runnerUp?: Country;
   awards?: CricketAwards;
+  pitchType?: PitchType;
   createdAt: string;
 }
