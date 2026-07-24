@@ -18,28 +18,36 @@ export interface FetchCountriesResult {
 }
 
 export async function fetchRestCountriesV5(): Promise<FetchCountriesResult> {
-  // 1. Try Local Storage Cache
+  // 1. Try Local Storage Cache (ONLY if it came from the real API)
   try {
     const cached = localStorage.getItem(CACHE_KEY);
     if (cached) {
       const parsed = JSON.parse(cached);
-      if (Array.isArray(parsed.allCountries) && parsed.allCountries.length > 100) {
+      if (parsed.isFromApi === true && Array.isArray(parsed.allCountries) && parsed.allCountries.length > 100) {
+        console.log('[REST Countries API] Serving cached API data from LocalStorage.');
         return parsed;
       }
     }
   } catch (e) {
-    console.warn('LocalStorage error reading country cache:', e);
+    console.warn('[REST Countries API] LocalStorage error reading country cache:', e);
   }
 
   // 2. Fetch via Proxy / Direct REST Countries v5 API if Bearer token exists
   const rawObjects: any[] = [];
   let fetchSuccessful = false;
 
+  console.log('[REST Countries API] Bearer Token Present:', Boolean(BEARER_TOKEN));
+
+  if (!BEARER_TOKEN) {
+    console.warn('[REST Countries API] VITE_REST_COUNTRIES_BEARER_TOKEN is missing or empty. Please set VITE_REST_COUNTRIES_BEARER_TOKEN in Vercel project settings and trigger a NEW deployment.');
+  }
+
   if (BEARER_TOKEN) {
     const endpointCandidates = [REST_COUNTRIES_V5_PROXY, REST_COUNTRIES_V5_DIRECT];
 
     for (const baseUrl of endpointCandidates) {
       try {
+        console.log(`[REST Countries API] Fetching from endpoint candidate: ${baseUrl}`);
         rawObjects.length = 0;
         let hasMore = true;
 
@@ -51,12 +59,15 @@ export async function fetchRestCountriesV5(): Promise<FetchCountriesResult> {
           });
 
           if (!response.ok) {
+            const errorText = await response.text().catch(() => '');
+            console.error(`[REST Countries API] HTTP ${response.status} from ${baseUrl}:`, errorText);
             throw new Error(`HTTP error ${response.status} from ${baseUrl}`);
           }
 
           const data = await response.json();
 
           if (data.errors && data.errors.length > 0) {
+            console.error(`[REST Countries API] Data errors from ${baseUrl}:`, data.errors);
             throw new Error(`API error: ${data.errors[0].message}`);
           }
 
@@ -73,11 +84,12 @@ export async function fetchRestCountriesV5(): Promise<FetchCountriesResult> {
         }
 
         if (rawObjects.length > 50) {
+          console.log(`[REST Countries API] Successfully fetched ${rawObjects.length} objects from ${baseUrl}`);
           fetchSuccessful = true;
           break;
         }
       } catch (err) {
-        console.warn(`Fetch candidate ${baseUrl} failed:`, err);
+        console.warn(`[REST Countries API] Fetch candidate ${baseUrl} failed:`, err);
       }
     }
   }
@@ -126,6 +138,7 @@ export async function fetchRestCountriesV5(): Promise<FetchCountriesResult> {
     });
   } else {
     // Fallback if API key is missing or request fails
+    console.info('[REST Countries API] Using offline sovereign country dataset fallback');
     allCountries = (FALLBACK_COUNTRIES_DATA as any[]).map((c: any, idx: number) => ({
       id: c.id || `fb_${idx}`,
       alpha2: c.alpha2 || '',
@@ -149,11 +162,12 @@ export async function fetchRestCountriesV5(): Promise<FetchCountriesResult> {
     sovereignCountries
   };
 
-  if (allCountries.length > 0) {
+  // Only cache in localStorage if fetched successfully from the API
+  if (fetchSuccessful && allCountries.length > 0) {
     try {
-      localStorage.setItem(CACHE_KEY, JSON.stringify(result));
+      localStorage.setItem(CACHE_KEY, JSON.stringify({ ...result, isFromApi: true }));
     } catch (e) {
-      console.warn('Failed saving cache:', e);
+      console.warn('[REST Countries API] Failed saving cache:', e);
     }
   }
 
