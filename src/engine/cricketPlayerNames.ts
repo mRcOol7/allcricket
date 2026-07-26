@@ -1,46 +1,98 @@
-// Localized Cricket Player Names for Cricket World Cup Simulation
+import { fetchSquadsFromApi, TeamItem } from '../services/squadsApi';
+import squadsData from '../data/squads.json';
 
+// Helper to map country names or ISO codes to 3-letter bank keys
+export function getTeamCountryCode(teamNameOrId: string): string {
+  const name = (teamNameOrId || '').toLowerCase().trim();
+  if (name === 'zaf' || name === 'rsa' || name.includes('south africa') || name.includes('south-africa')) return 'RSA';
+  if (name === 'ind' || name.includes('india')) return 'IND';
+  if (name === 'nam' || name.includes('namibia')) return 'NAM';
+  if (name === 'aus' || name.includes('australia')) return 'AUS';
+  if (name === 'zim' || name.includes('zimbabwe')) return 'ZIM';
+  if (name === 'oma' || name.includes('oman')) return 'OMA';
+  if (name === 'eng' || name.includes('england')) return 'ENG';
+  if (name === 'npl' || name === 'nep' || name.includes('nepal')) return 'NEP';
+  if (name === 'nzl' || name.includes('new zealand') || name.includes('new-zealand')) return 'NZL';
+  if (name === 'afg' || name.includes('afghanistan')) return 'AFG';
+  if (name === 'irl' || name.includes('ireland')) return 'IRE';
+  if (name === 'nld' || name === 'ned' || name.includes('netherlands')) return 'NED';
+  if (name === 'ita' || name.includes('italy')) return 'ITA';
+  if (name === 'can' || name.includes('canada')) return 'CAN';
+  if (name === 'pak' || name.includes('pakistan')) return 'PAK';
+  if (name === 'win' || name.includes('west indies') || name.includes('west-indies')) return 'WIN';
+  if (name === 'sco' || name.includes('scotland')) return 'SCO';
+  if (name === 'usa' || name.includes('united states') || name.includes('america')) return 'USA';
+  if (name === 'are' || name === 'uae' || name.includes('emirates')) return 'UAE';
+  if (name === 'lka' || name === 'sri' || name.includes('sri lanka') || name.includes('sri-lanka')) return 'SRI';
+  return (teamNameOrId || '').toUpperCase();
+}
+
+// Localized Cricket Player Names for Cricket World Cup Simulation
 const CRICKET_COUNTRY_BANKS: Record<string, { batters: string[]; bowlers: string[] }> = {
   IND: {
-    batters: ['V. Kohli', 'R. Sharma', 'S. Gill', 'S. Yadav', 'KL Rahul', 'R. Pant', 'R. Gaikwad', 'Y. Jaiswal'],
-    bowlers: ['J. Bumrah', 'M. Siraj', 'M. Shami', 'K. Yadav', 'R. Jadeja', 'A. Patel', 'A. Singh']
+    batters: ['Suryakumar Yadav (Captain)', 'Tilak Varma', 'Rinku Singh', 'Abhishek Sharma', 'Hardik Pandya', 'Shivam Dube', 'Sanju Samson', 'Ishan Kishan'],
+    bowlers: ['Jasprit Bumrah', 'Varun Chakaravarthy', 'Kuldeep Yadav', 'Arshdeep Singh', 'Mohammed Siraj', 'Axar Patel', 'Washington Sundar']
+  },
+  NAM: {
+    batters: ['Gerhard Erasmus (Captain)', 'Malan Kruger', 'Jan Frylinck', 'Louren Steenkamp', 'Jan Balt', 'Dylan Leicher', 'Alexander Volschenk', 'Zane Green', 'Jan Nicol Loftie-Eaton'],
+    bowlers: ['Bernard Scholtz', 'Ruben Trumpelmann', 'Jack Brassell', 'Ben Shikongo', 'Willem Myburgh', 'Max Heingo', 'JJ Smit']
   },
   AUS: {
-    batters: ['T. Head', 'M. Marsh', 'S. Smith', 'G. Maxwell', 'D. Warner', 'M. Labuschagne', 'J. Inglis'],
-    bowlers: ['P. Cummins', 'M. Starc', 'J. Hazlewood', 'A. Zampa', 'N. Lyon', 'X. Bartlett']
+    batters: ['Mitchell Marsh (Captain)', 'Tim David', 'Travis Head', 'Matt Renshaw', 'Steven Smith', 'Cooper Connolly', 'Cameron Green', 'Glenn Maxwell', 'Marcus Stoinis', 'Josh Inglis'],
+    bowlers: ['Xavier Bartlett', 'Nathan Ellis', 'Matthew Kuhnemann', 'Adam Zampa', 'Ben Dwarshuis']
+  },
+  ZIM: {
+    batters: ['Sikandar Raza (Captain)', 'Tashinga Musekiwa', 'Dion Myers', 'Ben Curran', 'Brian Bennett', 'Ryan Burl', 'Tinotenda Maposa', 'Clive Madande', 'Tadiwanashe Marumani'],
+    bowlers: ['Graeme Cremer', 'Wellington Masakadza', 'Blessing Muzarabani', 'Richard Ngarava', 'Brad Evans', 'Tony Munyonga']
+  },
+  OMA: {
+    batters: ['Jatinder Singh (Captain)', 'Ashish Odedara', 'Karan Sonavale', 'Wasim Ali', 'Aamir Kaleem', 'Hammad Mirza', 'Vinayak Shukla'],
+    bowlers: ['Nadeem Khan', 'Shah Faisal', 'Shakeel Ahmed', 'Sufyan Mehmood', 'Jay Odedra', 'Mohammad Nadeem', 'Jiten Ramanandi', 'Shafiq Jan']
   },
   ENG: {
-    batters: ['J. Buttler', 'J. Root', 'H. Brook', 'B. Stokes', 'P. Salt', 'L. Livingstone', 'D. Malan'],
-    bowlers: ['J. Archer', 'A. Rashid', 'M. Wood', 'S. Curran', 'R. Topley', 'G. Atkinson']
+    batters: ['Harry Brook (Captain)', 'Ben Duckett', 'Jacob Bethell', 'Will Jacks', 'Tom Banton', 'Jos Buttler', 'Philip Salt'],
+    bowlers: ['Jofra Archer', 'Adil Rashid', 'Josh Tongue', 'Luke Wood', 'Rehan Ahmed', 'Sam Curran', 'Liam Dawson', 'Jamie Overton']
   },
-  PAK: {
-    batters: ['B. Azam', 'M. Rizwan', 'F. Zaman', 'S. Ayub', 'I. Ahmed', 'A. Shafique'],
-    bowlers: ['S. Afridi', 'N. Shah', 'H. Rauf', 'S. Khan', 'A. Ahmed', 'M. Wasim']
+  NEP: {
+    batters: ['Rohit Paudel (Captain)', 'Kushal Bhurtel', 'Sundeep Jora', 'Dipendra Singh Airee', 'Aasif Sheikh', 'Lokesh Bam'],
+    bowlers: ['Sandeep Lamichhane', 'Basir Ahamad', 'Lalit Rajbanshi', 'Sher Malla', 'Aarif Sheikh', 'Sompal Kami', 'Karan KC', 'Nandan Yadav', 'Gulsan Jha']
   },
   RSA: {
-    batters: ['H. Klaasen', 'Q. de Kock', 'A. Markram', 'D. Miller', 'T. de Zorzi', 'R. van der Dussen'],
-    bowlers: ['K. Rabada', 'A. Nortje', 'M. Jansen', 'K. Maharaj', 'L. Williams', 'T. Shamsi']
+    batters: ['Aiden Markram (Captain)', 'Dewald Brevis', 'David Miller', 'Jason Smith', 'Quinton de Kock', 'Tristan Stubbs', 'Ryan Rickelton'],
+    bowlers: ['Keshav Maharaj', 'Kagiso Rabada', 'Kwena Maphaka', 'Lungi Ngidi', 'Anrich Nortje', 'George Linde', 'Marco Jansen', 'Corbin Bosch']
   },
   NZL: {
-    batters: ['K. Williamson', 'D. Conway', 'R. Ravindra', 'G. Phillips', 'D. Mitchell', 'M. Chapman'],
-    bowlers: ['T. Boult', 'T. Southee', 'M. Santner', 'L. Ferguson', 'M. Henry', 'I. Sodhi']
+    batters: ['Mitchell Santner (Captain)', 'Finn Allen', 'Mark Chapman', 'Daryl Mitchell', 'James Neesham', 'Rachin Ravindra', 'Devon Conway', 'Glenn Phillips', 'Tim Seifert'],
+    bowlers: ['Jacob Duffy', 'Lockie Ferguson', 'Matt Henry', 'Ish Sodhi', 'Kyle Jamieson', 'Cole McConchie']
   },
   SRI: {
-    batters: ['P. Nissanka', 'K. Mendis', 'C. Asalanka', 'D. de Silva', 'S. Samarawickrama', 'K. Perera'],
-    bowlers: ['M. Pathirana', 'W. Hasaranga', 'M. Theekshana', 'D. Madushanka', 'K. Rajitha']
+    batters: ['Dasun Shanaka (Captain)', 'Pathum Nissanka', 'Pavan Rathnayake', 'Kamindu Mendis', 'Charith Asalanka', 'Janith Liyanage', 'Kamil Mishara', 'Kusal Mendis', 'Kusal Perera'],
+    bowlers: ['Maheesh Theekshana', 'Dushmantha Chameera', 'Matheesha Pathirana', 'Pramod Madushan', 'Dilshan Madushanka', 'Wanindu Hasaranga', 'Dunith Wellalage', 'Dushan Hemantha']
   },
-  BAN: {
-    batters: ['S. Hasan', 'L. Das', 'N. Hossain Shanto', 'T. Hridoy', 'M. Rahim', 'M. Mahmudullah'],
-    bowlers: ['M. Rahman', 'T. Ahmed', 'S. Islam', 'M. Hasan Miraz', 'T. Sakib']
+  CAN: {
+    batters: ['Dilpreet Bajwa (Captain)', 'Ravinderpal Singh', 'Yuvraj Samra', 'Navneet Dhaliwal', 'Nicholas Kirton', 'Harsh Thaker', 'Shreyas Movva', 'Kanwarpal Tathgur'],
+    bowlers: ['Shivam Sharma', 'Dilon Heyliger', 'Kaleem Sana', 'Jaskaran Singh', 'Ajayveer Hundal', 'Saad Bin Zafar', 'Ansh Patel']
   },
-  AFG: {
-    batters: ['R. Gurbaz', 'I. Zadran', 'G. Naib', 'A. Omarzai', 'N. Zadran', 'M. Nabi'],
-    bowlers: ['R. Khan', 'F. Farooqi', 'N. Ahmad', 'M. Ur Rahman', 'N. Haq']
+  PAK: {
+    batters: ['Salman Agha (Captain)', 'Babar Azam', 'Fakhar Zaman', 'Sahibzada Farhan', 'Saim Ayub', 'Khawaja Nafay', 'Usman Khan'],
+    bowlers: ['Abrar Ahmed', 'Naseem Shah', 'Shaheen Afridi', 'Usman Tariq', 'Salman Mirza', 'Faheem Ashraf', 'Mohammad Nawaz', 'Shadab Khan']
   },
   WIN: {
-    batters: ['N. Pooran', 'S. Hope', 'R. Powell', 'E. Lewis', 'B. King', 'S. Rutherford'],
-    bowlers: ['A. Joseph', 'G. Motie', 'A. Hosein', 'R. Shepherd', 'J. Holder', 'O. McCoy']
-  }
+    batters: ['Shai Hope (Captain)', 'Shimron Hetmyer', 'Brandon King', 'Rovman Powell', 'Sherfane Rutherford', 'Quentin Sampson', 'Johnson Charles'],
+    bowlers: ['Matthew Forde', 'Akeal Hosein', 'Shamar Joseph', 'Gudakesh Motie', 'Jayden Seales', 'Jason Holder', 'Roston Chase', 'Romario Shepherd']
+  },
+  SCO: {
+    batters: ['Richie Berrington (Captain)', 'Michael Jones', 'George Munsey', 'Tom Bruce', 'Michael Leask', 'Brandon McMullen', 'Matthew Cross'],
+    bowlers: ['Brad Currie', 'Oliver Davidson', 'Chris Greaves', 'Safyaan Sharif', 'Brad Wheal', 'Zainullah Ihsan', 'Finlay McCreath', 'Mark Watt', 'Jack Jarvis']
+  },
+  USA: {
+    batters: ['Monank Patel (Captain)', 'Shayan Jahangir', 'Saiteja Mukkamalla', 'Shehan Jayasuriya', 'Milind Kumar', 'Shubham Ranjane', 'Andries Gous'],
+    bowlers: ['Nosthush Kenjige', 'Saurabh Netravalkar', 'Ali Khan', 'Ehsan Adil', 'Sanjay Krishnamurthi', 'Harmeet Singh', 'Shadley van Schalkwyk', 'Mohammad Mohsin']
+  },
+  UAE: {
+    batters: ['Muhammad Waseem (Captain)', 'Sohaib Khan', 'Mayank Kumar', 'Dhruv Parashar', 'Alishan Sharafu', 'Aryansh Sharma', 'Syed Haider'],
+    bowlers: ['Simranjeet Singh', 'Muhammad Rohid Khan', 'Muhammad Jawadullah', 'Muhammad Farooq', 'Muhammad Arfan', 'Junaid Siddique', 'Haider Ali', 'Harshit Kaushik']
+  },
 };
 
 const CRICKET_REGIONAL_BANKS: Record<string, { batters: string[]; bowlers: string[] }> = {
@@ -67,9 +119,9 @@ const CRICKET_REGIONAL_BANKS: Record<string, { batters: string[]; bowlers: strin
 };
 
 export function getRandomCricketBatter(countryId: string, region: string): string {
-  const upper = (countryId || '').toUpperCase();
-  if (CRICKET_COUNTRY_BANKS[upper]) {
-    const list = CRICKET_COUNTRY_BANKS[upper].batters;
+  const code = getTeamCountryCode(countryId);
+  if (CRICKET_COUNTRY_BANKS[code]) {
+    const list = CRICKET_COUNTRY_BANKS[code].batters;
     return list[Math.floor(Math.random() * list.length)];
   }
 
@@ -86,9 +138,9 @@ export function getRandomCricketBatter(countryId: string, region: string): strin
 }
 
 export function getRandomCricketBowler(countryId: string, region: string): string {
-  const upper = (countryId || '').toUpperCase();
-  if (CRICKET_COUNTRY_BANKS[upper]) {
-    const list = CRICKET_COUNTRY_BANKS[upper].bowlers;
+  const code = getTeamCountryCode(countryId);
+  if (CRICKET_COUNTRY_BANKS[code]) {
+    const list = CRICKET_COUNTRY_BANKS[code].bowlers;
     return list[Math.floor(Math.random() * list.length)];
   }
 
@@ -111,13 +163,13 @@ export interface CricketPlayerProfile {
 }
 
 export function getFullPlayingXI(countryId: string, region: string): CricketPlayerProfile[] {
-  const upper = (countryId || '').toUpperCase();
+  const code = getTeamCountryCode(countryId);
   let batters: string[] = [];
   let bowlers: string[] = [];
 
-  if (CRICKET_COUNTRY_BANKS[upper]) {
-    batters = CRICKET_COUNTRY_BANKS[upper].batters;
-    bowlers = CRICKET_COUNTRY_BANKS[upper].bowlers;
+  if (CRICKET_COUNTRY_BANKS[code]) {
+    batters = CRICKET_COUNTRY_BANKS[code].batters;
+    bowlers = CRICKET_COUNTRY_BANKS[code].bowlers;
   } else {
     let regKey = 'Asia';
     const r = (region || '').toLowerCase();
@@ -166,4 +218,35 @@ export function getFullPlayingXI(countryId: string, region: string): CricketPlay
   }
 
   return squad;
+}
+
+// Dynamic API Preloader function for fetching /api/squads
+export async function initSquadsFromApi(): Promise<void> {
+  try {
+    const data = await fetchSquadsFromApi();
+    if (data && data.teams && Array.isArray(data.teams)) {
+      data.teams.forEach((t: TeamItem) => {
+        const teamKey = getTeamCountryCode(t.team);
+        if (teamKey && t.squad) {
+          const battersList = [
+            ...(t.squad.batters || []).map(p => p.name),
+            ...(t.squad.allRounders || []).filter(p => p.role.includes('Batting')).map(p => p.name),
+            ...(t.squad.wicketKeepers || []).map(p => p.name)
+          ];
+          const bowlersList = [
+            ...(t.squad.bowlers || []).map(p => p.name),
+            ...(t.squad.allRounders || []).filter(p => p.role.includes('Bowling')).map(p => p.name)
+          ];
+          if (battersList.length > 0 || bowlersList.length > 0) {
+            CRICKET_COUNTRY_BANKS[teamKey] = {
+              batters: battersList.length > 0 ? battersList : (CRICKET_COUNTRY_BANKS[teamKey]?.batters || []),
+              bowlers: bowlersList.length > 0 ? bowlersList : (CRICKET_COUNTRY_BANKS[teamKey]?.bowlers || [])
+            };
+          }
+        }
+      });
+    }
+  } catch (err) {
+    console.warn('Using in-memory squad fallback:', err);
+  }
 }

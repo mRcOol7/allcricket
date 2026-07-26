@@ -1,4 +1,4 @@
-import { Country, CricketMatch, CricketRound, CricketTournament, CricketAwards, CricketTournamentSize, CricketBatterPerf, CricketBowlerPerf } from '../types/cricket';
+import { Country, CricketMatch, CricketRound, CricketTournament, CricketAwards, CricketTournamentSize, CricketBatterPerf, CricketBowlerPerf, PitchType } from '../types/cricket';
 import { getRandomCricketBatter, getRandomCricketBowler } from './cricketPlayerNames';
 
 export function getRoundName(totalTeamsInRound: number, isFinal: boolean = false): string {

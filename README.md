@@ -1,62 +1,70 @@
-# 🏏 Cricket World Cup Knockout Simulator
+# 🏏 All Cricket World Cup & 2D Stadium Live Match Simulator
 
-A modern, responsive **single-page Cricket World Cup Knockout Simulator** built with React 18, TypeScript, Tailwind CSS, and Framer Motion. The application automatically fetches all country records (~254 records) from the **REST Countries v5 API** using Bearer token authentication, filters sovereign nations, and simulates T20 cricket knockout tournaments round-by-round with instant simultaneous match score generation, Super Overs, Orange Cap (Top Batter), and Purple Cap (Top Bowler) awards.
+A state-of-the-art, feature-rich **Cricket World Cup Tournament Simulator & 2D Stadium Live Match Engine** built with React 18, TypeScript, Tailwind CSS, and Framer Motion. The application integrates dynamic squad API services (`/api/squads`), REST Countries v5 API, 2D stadium pitch physics, browser Web Speech audio commentary, TV Broadcast DRS (Decision Review System), interactive Super Overs, and full match scorecards.
 
 ---
 
 ## 🌟 Key Features
 
-- **REST Countries v5 API Integration**: Automatically fetches ~254 country records using paginated endpoints and Bearer token authentication.
-- **Sovereign Country Filter**: Filters countries to identify sovereign nations for Cricket World Cup eligibility.
-- **Full 256-Team Mega Tournament**: All 256 teams play in Round 1 (128 simultaneous T20 cricket matches in the Round of 256) with **zero byes**.
-- **T20 Cricket Score Simulation & Super Overs**: Generates realistic cricket scores (Runs, Wickets, Overs). Tied matches automatically trigger a **Super Over** tie-breaker (`165/7 vs 165/8 [Super Over: IND 18/0 vs PAK 12/1]`).
-- **Cricket Awards & Live Stats**:
-  - 🏏 **Orange Cap (Top Batter)**: Real-time tracking of top run scorer across all rounds.
-  - ⚾ **Purple Cap (Top Bowler)**: Real-time tracking of top wicket taker across all rounds.
-  - 📊 **Match Performers**: Displays top batter (`78 runs (48b)`) and top bowler (`3/24`) on each match card.
-- **Nations Directory Drawer**: Search and filter all ~254 fetched country records by sovereign/dependency status, region, name, or ISO/ICC codes.
-- **Champion Celebration Modal**: Triggers `canvas-confetti` explosion with golden trophy presentation, Orange Cap, and Purple Cap awards.
+### 🌐 1. Live Squads API Service (`GET /api/squads`) & REST Countries
+- **20-Team International Squad Dataset**: Serves official squad rosters over HTTP (`/api/squads`) for **India, Australia, South Africa, Pakistan, England, New Zealand, West Indies, Afghanistan, Sri Lanka, USA, Namibia, Zimbabwe, Oman, Nepal, Ireland, Netherlands, Italy, Canada, Scotland, UAE**.
+- **REST Countries v5 Integration**: Fetches ~254 country records using Vite server proxying (`/api-restcountries`) and Bearer token authentication with resilient offline dataset fallbacks.
+
+### 🏟️ 2. 2D Stadium Live Match Physics & Real-Time Pitch Simulator
+- **Interactive 2D Pitch Stadium**: Visualizes the 22-yard pitch strip, bowler run-up animations, batter stroke contact, ball trajectories, and 8 outfield fielders sliding towards boundary shots.
+- **TV Scoreboard Ticker**: Displays live runs, wickets, over-by-over ball timeline, run rates, and target projections.
+
+### 📺 3. TV Broadcast DRS (Decision Review System) & 3D Hawkeye Replay
+- **UltraEdge Snickometer Replay**: Animated audio waveform graph detecting bat edge spikes (*"ULTRAEDGE SPIKE DETECTED!"* vs *"FLAT LINE ON ULTRAEDGE"*).
+- **3D Hawkeye Ball Tracking Stumps Path**: Simulates ball trajectory showing **Pitching Line**, **Impact Point**, and **Wickets Hitting / Missing**.
+- **Automatic Live Scenario Trigger**: Triggers 100% automatically during live ball-by-ball match play on close LBW and Catch appeals.
+- **Third Umpire Voice Announcement**: Audio + visual decision reveal (`OUT 🔴` / `NOT OUT 🟢`) that upholds or overturns on-field decisions.
+
+### 🎙️ 4. International TV Voice Commentary Engine (Ian Bishop & Ravi Shastri Style)
+- **Authentic Broadcast Phrase Generator**: Generates iconic international commentary (*"REMEMBER THE NAME!", "INTO THE UPPER DECK!", "CLEAN BOWLED! TIMBERRR!"*).
+- **Browser Web Speech Audio TTS**: Synthesizes and **voices live commentary out loud** as each ball is bowled.
+- **Voice Control Toggle**: Includes a `Voice TTS: ON 🔊 / OFF 🔇` toggle directly on the live commentary feed.
+
+### ⚡ 5. Interactive Super Over Sudden Death Mode (1 Over / 6 Balls)
+- Tied 5-Over matches automatically transition into an interactive **Sudden Death Super Over** (Innings 3 & Innings 4).
+- Features Super Over siren audio FX, live target chasing, and Super Over winner announcements.
+
+### 📋 6. Full Official Match Scorecard
+- Interactive **`Full Scorecard 📋`** panel featuring tabbed Batting Scorecard (*Out/Not Out status, Runs, Balls, 4s, 6s, Strike Rate*) and Bowling Figures (*Overs, Runs, Wickets, Economy*) for both Innings 1 and Innings 2.
+
+### 🌤️ 7. Stadium Atmosphere Weather & Dugout Tactical Boosters
+- **Weather Atmosphere Selector**: Switch between **Night Floodlights 🌃**, **Sunny Day ☀️**, and **Dew / Rain 🌧️**.
+- **Dugout Tactical Cards**: Execute manager abilities like **Power Hit 🚀** (forces a monster 6) and **Searing Yorker 🎯** (forces a 152km/h wicket).
+- **LED Boundary Rope Glow & Crowd Cheer Audio**: Boundary rope flashes **gold for 6s**, **emerald for 4s**, and **crimson for Wickets** accompanied by synth crowd cheer audio FX.
+
+### 🏆 8. Knockout World Cup Tournament & Leaderboard Awards
+- Full T20 Tournament Knockout Bracket with zero byes (Round of 256 / 128 / 64 / 32 / 16 / Quarter-Finals / Semi-Finals / Final).
+- **Orange Cap (Top Batter)** & **Purple Cap (Top Bowler)** real-time leaderboard tracking.
+- Gold Trophy Champion Celebration modal with confetti explosion.
 
 ---
 
-## 🔑 How to Put and Configure the API Key
+## 🔑 Squads API & REST Countries Configuration
 
-### 1. How to Find & Get a REST Countries v5 API Key
-1. Visit the official REST Countries Dashboard at [https://restcountries.com/dashboard](https://restcountries.com/dashboard) or [https://restcountries.com/api-keys](https://restcountries.com/api-keys).
-2. Register for a free account to generate your Bearer API token (e.g. `rc_live_3ddccde8406b46e2b0edc5858d9c6033`).
+### 1. Local Squads API Endpoint (`GET /api/squads`)
+The application includes a Vite dev server middleware in [vite.config.ts](file:///e:/allcricket/vite.config.ts) that serves squad data dynamically at:
+```http
+GET http://localhost:3001/api/squads
+```
+Fallback static URL is available at `/squads.json`.
 
-### 2. How to Add Your API Key to the Application
-Create a `.env` file in the project root folder (you can copy `.env.example`):
+### 2. REST Countries Bearer Token Configuration
+Create a `.env` file in the project root:
 
 ```bash
 cp .env.example .env
 ```
 
-Open `.env` and paste your Bearer token:
+Add your REST Countries API token:
 
 ```env
-# REST Countries v5 API Configuration
 VITE_REST_COUNTRIES_BEARER_TOKEN=rc_live_your_actual_bearer_token_here
 ```
-
----
-
-## 🔍 How the Application Finds and Uses the API Key
-
-The application dynamically detects and applies your API key through the following flow:
-
-1. **Environment Key Detection** ([src/services/restCountriesApi.ts](file:///e:/allcricket/src/services/restCountriesApi.ts)):
-   - The application inspects Vite's environment variable `import.meta.env.VITE_REST_COUNTRIES_BEARER_TOKEN`.
-   - If present, it automatically formats the `Authorization: Bearer <TOKEN>` HTTP header.
-   - If not set, it gracefully falls back to the offline dataset.
-
-2. **CORS Bypassing via Vite Server Proxy** ([vite.config.ts](file:///e:/allcricket/vite.config.ts)):
-   - Browser client requests to external APIs can trigger CORS origin restrictions (`originNotAllowed`).
-   - The application routes API requests through Vite's built-in development proxy (`/api-restcountries`), which forwards requests server-to-server to `https://api.restcountries.com/countries/v5`.
-   - This ensures 100% reliable fetching without CORS errors.
-
-3. **Offline Resilient Fallback**:
-   - If the API service is unreachable or rate-limited, the application seamlessly loads a complete offline dataset (~210 sovereign nations) so the simulator never crashes.
 
 ---
 
@@ -66,7 +74,7 @@ The application dynamically detects and applies your API key through the followi
 - Node.js (v18.0.0 or higher)
 - npm or yarn
 
-### Installation & Execution
+### Running the Development Server
 
 1. Navigate to the project directory:
    ```bash
@@ -78,14 +86,14 @@ The application dynamically detects and applies your API key through the followi
    npm install
    ```
 
-3. Run the development server:
+3. Start the Vite dev server:
    ```bash
    npm run dev
    ```
 
-4. Open your browser at `http://localhost:3001` (or the URL printed in the terminal).
+4. Open your browser at `http://localhost:3001`.
 
-### Building for Production
+### Production Build
 
 ```bash
 npm run build
@@ -95,9 +103,10 @@ npm run build
 
 ## 🛠️ Tech Stack
 
-- **Framework**: React 18 + TypeScript + Vite
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion & Canvas Confetti
+- **Core & Logic**: React 18 + TypeScript + Vite
+- **Styling & UI**: Vanilla CSS + Tailwind CSS
+- **Animations & Physics**: Framer Motion
 - **Icons**: Lucide React
 - **State Management**: Zustand
-- **API**: REST Countries v5 API (`https://api.restcountries.com/countries/v5`)
+- **Audio Synthesizer & Speech**: Web Audio API + Web Speech API (SpeechSynthesis)
+- **API Services**: Squads API (`/api/squads`) + REST Countries v5 (`/api-restcountries`)

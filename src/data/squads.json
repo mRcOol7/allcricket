@@ -1,0 +1,568 @@
+{
+  "teams": [
+    {
+      "team": "India",
+      "squad": {
+        "batters": [
+          { "id": "suryakumar-yadav", "name": "Suryakumar Yadav (Captain)", "role": "Batsman" },
+          { "id": "tilak-varma", "name": "Tilak Varma", "role": "Batsman" },
+          { "id": "rinku-singh", "name": "Rinku Singh", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "abhishek-sharma", "name": "Abhishek Sharma", "role": "Batting Allrounder" },
+          { "id": "hardik-pandya", "name": "Hardik Pandya", "role": "Batting Allrounder" },
+          { "id": "shivam-dube", "name": "Shivam Dube", "role": "Batting Allrounder" },
+          { "id": "axar-patel", "name": "Axar Patel", "role": "Bowling Allrounder" },
+          { "id": "washington-sundar", "name": "Washington Sundar", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "sanju-samson", "name": "Sanju Samson", "role": "WK-Batsman" },
+          { "id": "ishan-kishan", "name": "Ishan Kishan", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "jasprit-bumrah", "name": "Jasprit Bumrah", "role": "Bowler" },
+          { "id": "varun-chakaravarthy", "name": "Varun Chakaravarthy", "role": "Bowler" },
+          { "id": "kuldeep-yadav", "name": "Kuldeep Yadav", "role": "Bowler" },
+          { "id": "arshdeep-singh", "name": "Arshdeep Singh", "role": "Bowler" },
+          { "id": "mohammed-siraj", "name": "Mohammed Siraj", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Namibia",
+      "squad": {
+        "batters": [
+          { "id": "malan-kruger", "name": "Malan Kruger", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "gerhard-erasmus", "name": "Gerhard Erasmus (Captain)", "role": "Batting Allrounder" },
+          { "id": "jan-frylinck", "name": "Jan Frylinck", "role": "Batting Allrounder" },
+          { "id": "louren-steenkamp", "name": "Louren Steenkamp", "role": "Batting Allrounder" },
+          { "id": "jan-balt", "name": "Jan Balt", "role": "Batting Allrounder" },
+          { "id": "dylan-leicher", "name": "Dylan Leicher", "role": "Batting Allrounder" },
+          { "id": "alexander-volschenk", "name": "Alexander Volschenk", "role": "Batting Allrounder" },
+          { "id": "jj-smit", "name": "JJ Smit", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "zane-green", "name": "Zane Green", "role": "WK-Batsman" },
+          { "id": "jan-nicol-loftie-eaton", "name": "Jan Nicol Loftie-Eaton", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "bernard-scholtz", "name": "Bernard Scholtz", "role": "Bowler" },
+          { "id": "ruben-trumpelmann", "name": "Ruben Trumpelmann", "role": "Bowler" },
+          { "id": "jack-brassell", "name": "Jack Brassell", "role": "Bowler" },
+          { "id": "ben-shikongo", "name": "Ben Shikongo", "role": "Bowler" },
+          { "id": "willem-myburgh", "name": "Willem Myburgh", "role": "Bowler" },
+          { "id": "max-heingo", "name": "Max Heingo", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Australia",
+      "squad": {
+        "batters": [
+          { "id": "tim-david", "name": "Tim David", "role": "Batsman" },
+          { "id": "travis-head", "name": "Travis Head", "role": "Batsman" },
+          { "id": "matt-renshaw", "name": "Matt Renshaw", "role": "Batsman" },
+          { "id": "steven-smith", "name": "Steven Smith", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "mitchell-marsh", "name": "Mitchell Marsh (Captain)", "role": "Batting Allrounder" },
+          { "id": "cooper-connolly", "name": "Cooper Connolly", "role": "Batting Allrounder" },
+          { "id": "cameron-green", "name": "Cameron Green", "role": "Batting Allrounder" },
+          { "id": "glenn-maxwell", "name": "Glenn Maxwell", "role": "Batting Allrounder" },
+          { "id": "marcus-stoinis", "name": "Marcus Stoinis", "role": "Batting Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "josh-inglis", "name": "Josh Inglis", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "xavier-bartlett", "name": "Xavier Bartlett", "role": "Bowler" },
+          { "id": "nathan-ellis", "name": "Nathan Ellis", "role": "Bowler" },
+          { "id": "matthew-kuhnemann", "name": "Matthew Kuhnemann", "role": "Bowler" },
+          { "id": "adam-zampa", "name": "Adam Zampa", "role": "Bowler" },
+          { "id": "ben-dwarshuis", "name": "Ben Dwarshuis", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Zimbabwe",
+      "squad": {
+        "batters": [
+          { "id": "tashinga-musekiwa", "name": "Tashinga Musekiwa", "role": "Batsman" },
+          { "id": "dion-myers", "name": "Dion Myers", "role": "Batsman" },
+          { "id": "ben-curran", "name": "Ben Curran", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "sikandar-raza", "name": "Sikandar Raza (Captain)", "role": "Batting Allrounder" },
+          { "id": "brian-bennett", "name": "Brian Bennett", "role": "Batting Allrounder" },
+          { "id": "ryan-burl", "name": "Ryan Burl", "role": "Batting Allrounder" },
+          { "id": "tinotenda-maposa", "name": "Tinotenda Maposa", "role": "Batting Allrounder" },
+          { "id": "brad-evans", "name": "Brad Evans", "role": "Bowling Allrounder" },
+          { "id": "tony-munyonga", "name": "Tony Munyonga", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "clive-madande", "name": "Clive Madande", "role": "WK-Batsman" },
+          { "id": "tadiwanashe-marumani", "name": "Tadiwanashe Marumani", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "graeme-cremer", "name": "Graeme Cremer", "role": "Bowler" },
+          { "id": "wellington-masakadza", "name": "Wellington Masakadza", "role": "Bowler" },
+          { "id": "blessing-muzarabani", "name": "Blessing Muzarabani", "role": "Bowler" },
+          { "id": "richard-ngarava", "name": "Richard Ngarava", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Oman",
+      "squad": {
+        "batters": [
+          { "id": "jatinder-singh", "name": "Jatinder Singh (Captain)", "role": "Batsman" },
+          { "id": "ashish-odedara", "name": "Ashish Odedara", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "karan-sonavale", "name": "Karan Sonavale", "role": "Batting Allrounder" },
+          { "id": "wasim-ali", "name": "Wasim Ali", "role": "Batting Allrounder" },
+          { "id": "aamir-kaleem", "name": "Aamir Kaleem", "role": "Batting Allrounder" },
+          { "id": "jay-odedra", "name": "Jay Odedra", "role": "Bowling Allrounder" },
+          { "id": "mohammad-nadeem", "name": "Mohammad Nadeem", "role": "Bowling Allrounder" },
+          { "id": "jiten-ramanandi", "name": "Jiten Ramanandi", "role": "Bowling Allrounder" },
+          { "id": "shafiq-jan", "name": "Shafiq Jan", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "hammad-mirza", "name": "Hammad Mirza", "role": "WK-Batsman" },
+          { "id": "vinayak-shukla", "name": "Vinayak Shukla", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "nadeem-khan", "name": "Nadeem Khan", "role": "Bowler" },
+          { "id": "shah-faisal", "name": "Shah Faisal", "role": "Bowler" },
+          { "id": "shakeel-ahmed", "name": "Shakeel Ahmed", "role": "Bowler" },
+          { "id": "sufyan-mehmood", "name": "Sufyan Mehmood", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "England",
+      "squad": {
+        "batters": [
+          { "id": "harry-brook", "name": "Harry Brook (Captain)", "role": "Batsman" },
+          { "id": "ben-duckett", "name": "Ben Duckett", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "jacob-bethell", "name": "Jacob Bethell", "role": "Batting Allrounder" },
+          { "id": "will-jacks", "name": "Will Jacks", "role": "Batting Allrounder" },
+          { "id": "rehan-ahmed", "name": "Rehan Ahmed", "role": "Bowling Allrounder" },
+          { "id": "sam-curran", "name": "Sam Curran", "role": "Bowling Allrounder" },
+          { "id": "liam-dawson", "name": "Liam Dawson", "role": "Bowling Allrounder" },
+          { "id": "jamie-overton", "name": "Jamie Overton", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "tom-banton", "name": "Tom Banton", "role": "WK-Batsman" },
+          { "id": "jos-buttler", "name": "Jos Buttler", "role": "WK-Batsman" },
+          { "id": "philip-salt", "name": "Philip Salt", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "jofra-archer", "name": "Jofra Archer", "role": "Bowler" },
+          { "id": "adil-rashid", "name": "Adil Rashid", "role": "Bowler" },
+          { "id": "josh-tongue", "name": "Josh Tongue", "role": "Bowler" },
+          { "id": "luke-wood", "name": "Luke Wood", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Nepal",
+      "squad": {
+        "batters": [
+          { "id": "kushal-bhurtel", "name": "Kushal Bhurtel", "role": "Batsman" },
+          { "id": "sundeep-jora", "name": "Sundeep Jora", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "rohit-paudel", "name": "Rohit Paudel (Captain)", "role": "Batting Allrounder" },
+          { "id": "dipendra-singh-airee", "name": "Dipendra Singh Airee", "role": "Batting Allrounder" },
+          { "id": "aarif-sheikh", "name": "Aarif Sheikh", "role": "Bowling Allrounder" },
+          { "id": "sompal-kami", "name": "Sompal Kami", "role": "Bowling Allrounder" },
+          { "id": "karan-kc", "name": "Karan KC", "role": "Bowling Allrounder" },
+          { "id": "nandan-yadav", "name": "Nandan Yadav", "role": "Bowling Allrounder" },
+          { "id": "gulsan-jha", "name": "Gulsan Jha", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "aasif-sheikh", "name": "Aasif Sheikh", "role": "WK-Batsman" },
+          { "id": "lokesh-bam", "name": "Lokesh Bam", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "sandeep-lamichhane", "name": "Sandeep Lamichhane", "role": "Bowler" },
+          { "id": "basir-ahamad", "name": "Basir Ahamad", "role": "Bowler" },
+          { "id": "lalit-rajbanshi", "name": "Lalit Rajbanshi", "role": "Bowler" },
+          { "id": "sher-malla", "name": "Sher Malla", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "South Africa",
+      "squad": {
+        "batters": [
+          { "id": "aiden-markram", "name": "Aiden Markram (Captain)", "role": "Batsman" },
+          { "id": "dewald-brevis", "name": "Dewald Brevis", "role": "Batsman" },
+          { "id": "david-miller", "name": "David Miller", "role": "Batsman" },
+          { "id": "jason-smith", "name": "Jason Smith", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "george-linde", "name": "George Linde", "role": "Batting Allrounder" },
+          { "id": "marco-jansen", "name": "Marco Jansen", "role": "Bowling Allrounder" },
+          { "id": "corbin-bosch", "name": "Corbin Bosch", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "quinton-de-kock", "name": "Quinton de Kock", "role": "WK-Batsman" },
+          { "id": "tristan-stubbs", "name": "Tristan Stubbs", "role": "WK-Batsman" },
+          { "id": "ryan-rickelton", "name": "Ryan Rickelton", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "keshav-maharaj", "name": "Keshav Maharaj", "role": "Bowler" },
+          { "id": "kagiso-rabada", "name": "Kagiso Rabada", "role": "Bowler" },
+          { "id": "kwena-maphaka", "name": "Kwena Maphaka", "role": "Bowler" },
+          { "id": "lungi-ngidi", "name": "Lungi Ngidi", "role": "Bowler" },
+          { "id": "anrich-nortje", "name": "Anrich Nortje", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "New Zealand",
+      "squad": {
+        "batters": [
+          { "id": "finn-allen", "name": "Finn Allen", "role": "Batsman" },
+          { "id": "mark-chapman", "name": "Mark Chapman", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "daryl-mitchell", "name": "Daryl Mitchell", "role": "Batting Allrounder" },
+          { "id": "james-neesham", "name": "James Neesham", "role": "Batting Allrounder" },
+          { "id": "rachin-ravindra", "name": "Rachin Ravindra", "role": "Batting Allrounder" },
+          { "id": "mitchell-santner", "name": "Mitchell Santner (Captain)", "role": "Bowling Allrounder" },
+          { "id": "cole-mcconchie", "name": "Cole McConchie", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "devon-conway", "name": "Devon Conway", "role": "WK-Batsman" },
+          { "id": "glenn-phillips", "name": "Glenn Phillips", "role": "WK-Batsman" },
+          { "id": "tim-seifert", "name": "Tim Seifert", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "jacob-duffy", "name": "Jacob Duffy", "role": "Bowler" },
+          { "id": "lockie-ferguson", "name": "Lockie Ferguson", "role": "Bowler" },
+          { "id": "matt-henry", "name": "Matt Henry", "role": "Bowler" },
+          { "id": "ish-sodhi", "name": "Ish Sodhi", "role": "Bowler" },
+          { "id": "kyle-jamieson", "name": "Kyle Jamieson", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Afghanistan",
+      "squad": {
+        "batters": [
+          { "id": "sediqullah-atal", "name": "Sediqullah Atal", "role": "Batsman" },
+          { "id": "darwish-rasooli", "name": "Darwish Rasooli", "role": "Batsman" },
+          { "id": "ibrahim-zadran", "name": "Ibrahim Zadran", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "shahidullah-kamal", "name": "Shahidullah Kamal", "role": "Batting Allrounder" },
+          { "id": "gulbadin-naib", "name": "Gulbadin Naib", "role": "Batting Allrounder" },
+          { "id": "rashid-khan", "name": "Rashid Khan (Captain)", "role": "Bowling Allrounder" },
+          { "id": "mohammad-nabi", "name": "Mohammad Nabi", "role": "Bowling Allrounder" },
+          { "id": "azmatullah-omarzai", "name": "Azmatullah Omarzai", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "rahmanullah-gurbaz", "name": "Rahmanullah Gurbaz", "role": "WK-Batsman" },
+          { "id": "mohammad-ishaq", "name": "Mohammad Ishaq", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "noor-ahmad", "name": "Noor Ahmad", "role": "Bowler" },
+          { "id": "abdullah-ahmadzai", "name": "Abdullah Ahmadzai", "role": "Bowler" },
+          { "id": "fazalhaq-farooqi", "name": "Fazalhaq Farooqi", "role": "Bowler" },
+          { "id": "mujeeb-ur-rahman", "name": "Mujeeb Ur Rahman", "role": "Bowler" },
+          { "id": "zia-ur-rahman-sharifi", "name": "Zia Ur Rahman Sharifi", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Ireland",
+      "squad": {
+        "batters": [
+          { "id": "ross-adair", "name": "Ross Adair", "role": "Batsman" },
+          { "id": "benjamin-calitz", "name": "Benjamin Calitz", "role": "Batsman" },
+          { "id": "harry-tector", "name": "Harry Tector", "role": "Batsman" },
+          { "id": "tim-tector", "name": "Tim Tector", "role": "Batsman" },
+          { "id": "sam-topping", "name": "Sam Topping", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "gareth-delany", "name": "Gareth Delany", "role": "Batting Allrounder" },
+          { "id": "curtis-campher", "name": "Curtis Campher", "role": "Bowling Allrounder" },
+          { "id": "george-dockrell", "name": "George Dockrell", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "lorcan-tucker", "name": "Lorcan Tucker (Captain) (Keeper)", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "mark-adair", "name": "Mark Adair", "role": "Bowler" },
+          { "id": "matthew-humphreys", "name": "Matthew Humphreys", "role": "Bowler" },
+          { "id": "joshua-little", "name": "Joshua Little", "role": "Bowler" },
+          { "id": "barry-mccarthy", "name": "Barry McCarthy", "role": "Bowler" },
+          { "id": "craig-young", "name": "Craig Young", "role": "Bowler" },
+          { "id": "benjamin-white", "name": "Benjamin White", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Netherlands",
+      "squad": {
+        "batters": [
+          { "id": "max-odowd", "name": "Max O'Dowd", "role": "Batsman" },
+          { "id": "zach-lion-cachet", "name": "Zach Lion-Cachet", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "colin-ackermann", "name": "Colin Ackermann", "role": "Batting Allrounder" },
+          { "id": "bas-de-leede", "name": "Bas de Leede", "role": "Batting Allrounder" },
+          { "id": "michael-levitt", "name": "Michael Levitt", "role": "Batting Allrounder" },
+          { "id": "timm-van-der-gugten", "name": "Timm van der Gugten", "role": "Bowling Allrounder" },
+          { "id": "saqib-zulfiqar", "name": "Saqib Zulfiqar", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "noah-croes", "name": "Noah Croes", "role": "WK-Batsman" },
+          { "id": "scott-edwards", "name": "Scott Edwards (Captain)", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "logan-van-beek", "name": "Logan van Beek", "role": "Bowler" },
+          { "id": "aryan-dutt", "name": "Aryan Dutt", "role": "Bowler" },
+          { "id": "fred-klaassen", "name": "Fred Klaassen", "role": "Bowler" },
+          { "id": "kyle-klein", "name": "Kyle Klein", "role": "Bowler" },
+          { "id": "paul-van-meekeren", "name": "Paul van Meekeren", "role": "Bowler" },
+          { "id": "roelof-van-der-merwe", "name": "Roelof van der Merwe", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Italy",
+      "squad": {
+        "batters": [
+          { "id": "wayne-madsen", "name": "Wayne Madsen (Captain)", "role": "Batsman" },
+          { "id": "anthony-mosca", "name": "Anthony Mosca", "role": "Batsman" },
+          { "id": "justin-mosca", "name": "Justin Mosca", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "harry-manenti", "name": "Harry Manenti", "role": "Batting Allrounder" },
+          { "id": "jaspreet-singh", "name": "Jaspreet Singh", "role": "Batting Allrounder" },
+          { "id": "jj-smuts", "name": "JJ Smuts", "role": "Batting Allrounder" },
+          { "id": "zain-ali", "name": "Zain Ali", "role": "Bowling Allrounder" },
+          { "id": "syed-naqvi", "name": "Syed Naqvi", "role": "Bowling Allrounder" },
+          { "id": "ben-manenti", "name": "Ben Manenti", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "marcus-campopiano", "name": "Marcus Campopiano", "role": "WK-Batsman" },
+          { "id": "gian-meade", "name": "Gian Meade", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "ali-hasan", "name": "Ali Hasan", "role": "Bowler" },
+          { "id": "grant-stewart", "name": "Grant Stewart", "role": "Bowler" },
+          { "id": "thomas-draca", "name": "Thomas Draca", "role": "Bowler" },
+          { "id": "crishan-kalugamage", "name": "Crishan Kalugamage", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Canada",
+      "squad": {
+        "batters": [
+          { "id": "ravinderpal-singh", "name": "Ravinderpal Singh", "role": "Batsman" },
+          { "id": "yuvraj-samra", "name": "Yuvraj Samra", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "navneet-dhaliwal", "name": "Navneet Dhaliwal", "role": "Batting Allrounder" },
+          { "id": "nicholas-kirton", "name": "Nicholas Kirton", "role": "Batting Allrounder" },
+          { "id": "harsh-thaker", "name": "Harsh Thaker", "role": "Batting Allrounder" },
+          { "id": "dilpreet-bajwa", "name": "Dilpreet Bajwa (Captain)", "role": "Bowling Allrounder" },
+          { "id": "ajayveer-hundal", "name": "Ajayveer Hundal", "role": "Bowling Allrounder" },
+          { "id": "saad-bin-zafar", "name": "Saad Bin Zafar", "role": "Bowling Allrounder" },
+          { "id": "ansh-patel", "name": "Ansh Patel", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "shreyas-movva", "name": "Shreyas Movva", "role": "WK-Batsman" },
+          { "id": "kanwarpal-tathgur", "name": "Kanwarpal Tathgur", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "shivam-sharma", "name": "Shivam Sharma", "role": "Bowler" },
+          { "id": "dilon-heyliger", "name": "Dilon Heyliger", "role": "Bowler" },
+          { "id": "kaleem-sana", "name": "Kaleem Sana", "role": "Bowler" },
+          { "id": "jaskaran-singh", "name": "Jaskaran Singh", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Pakistan",
+      "squad": {
+        "batters": [
+          { "id": "babar-azam", "name": "Babar Azam", "role": "Batsman" },
+          { "id": "fakhar-zaman", "name": "Fakhar Zaman", "role": "Batsman" },
+          { "id": "sahibzada-farhan", "name": "Sahibzada Farhan", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "salman-agha", "name": "Salman Agha (Captain)", "role": "Batting Allrounder" },
+          { "id": "saim-ayub", "name": "Saim Ayub", "role": "Batting Allrounder" },
+          { "id": "faheem-ashraf", "name": "Faheem Ashraf", "role": "Bowling Allrounder" },
+          { "id": "mohammad-nawaz", "name": "Mohammad Nawaz", "role": "Bowling Allrounder" },
+          { "id": "shadab-khan", "name": "Shadab Khan", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "khawaja-nafay", "name": "Khawaja Nafay", "role": "WK-Batsman" },
+          { "id": "usman-khan", "name": "Usman Khan", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "abrar-ahmed", "name": "Abrar Ahmed", "role": "Bowler" },
+          { "id": "naseem-shah", "name": "Naseem Shah", "role": "Bowler" },
+          { "id": "shaheen-afridi", "name": "Shaheen Afridi", "role": "Bowler" },
+          { "id": "usman-tariq", "name": "Usman Tariq", "role": "Bowler" },
+          { "id": "salman-mirza", "name": "Salman Mirza", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "West Indies",
+      "squad": {
+        "batters": [
+          { "id": "shimron-hetmyer", "name": "Shimron Hetmyer", "role": "Batsman" },
+          { "id": "brandon-king", "name": "Brandon King", "role": "Batsman" },
+          { "id": "rovman-powell", "name": "Rovman Powell", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "sherfane-rutherford", "name": "Sherfane Rutherford", "role": "Batting Allrounder" },
+          { "id": "quentin-sampson", "name": "Quentin Sampson", "role": "Batting Allrounder" },
+          { "id": "jason-holder", "name": "Jason Holder", "role": "Bowling Allrounder" },
+          { "id": "roston-chase", "name": "Roston Chase", "role": "Bowling Allrounder" },
+          { "id": "romario-shepherd", "name": "Romario Shepherd", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "shai-hope", "name": "Shai Hope (Captain)", "role": "WK-Batsman" },
+          { "id": "johnson-charles", "name": "Johnson Charles", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "matthew-forde", "name": "Matthew Forde", "role": "Bowler" },
+          { "id": "akeal-hosein", "name": "Akeal Hosein", "role": "Bowler" },
+          { "id": "shamar-joseph", "name": "Shamar Joseph", "role": "Bowler" },
+          { "id": "gudakesh-motie", "name": "Gudakesh Motie", "role": "Bowler" },
+          { "id": "jayden-seales", "name": "Jayden Seales", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Scotland",
+      "squad": {
+        "batters": [
+          { "id": "michael-jones", "name": "Michael Jones", "role": "Batsman" },
+          { "id": "george-munsey", "name": "George Munsey", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "richie-berrington", "name": "Richie Berrington (Captain)", "role": "Batting Allrounder" },
+          { "id": "tom-bruce", "name": "Tom Bruce", "role": "Batting Allrounder" },
+          { "id": "michael-leask", "name": "Michael Leask", "role": "Batting Allrounder" },
+          { "id": "brandon-mcmullen", "name": "Brandon McMullen", "role": "Batting Allrounder" },
+          { "id": "finlay-mccreath", "name": "Finlay McCreath", "role": "Bowling Allrounder" },
+          { "id": "mark-watt", "name": "Mark Watt", "role": "Bowling Allrounder" },
+          { "id": "jack-jarvis", "name": "Jack Jarvis", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "matthew-cross", "name": "Matthew Cross", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "brad-currie", "name": "Brad Currie", "role": "Bowler" },
+          { "id": "oliver-davidson", "name": "Oliver Davidson", "role": "Bowler" },
+          { "id": "chris-greaves", "name": "Chris Greaves", "role": "Bowler" },
+          { "id": "safyaan-sharif", "name": "Safyaan Sharif", "role": "Bowler" },
+          { "id": "brad-wheal", "name": "Brad Wheal", "role": "Bowler" },
+          { "id": "zainullah-ihsan", "name": "Zainullah Ihsan", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "USA",
+      "squad": {
+        "batters": [
+          { "id": "shayan-jahangir", "name": "Shayan Jahangir", "role": "Batsman" },
+          { "id": "saiteja-mukkamalla", "name": "Saiteja Mukkamalla", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "shehan-jayasuriya", "name": "Shehan Jayasuriya", "role": "Batting Allrounder" },
+          { "id": "milind-kumar", "name": "Milind Kumar", "role": "Batting Allrounder" },
+          { "id": "shubham-ranjane", "name": "Shubham Ranjane", "role": "Batting Allrounder" },
+          { "id": "sanjay-krishnamurthi", "name": "Sanjay Krishnamurthi", "role": "Bowling Allrounder" },
+          { "id": "harmeet-singh", "name": "Harmeet Singh", "role": "Bowling Allrounder" },
+          { "id": "shadley-van-schalkwyk", "name": "Shadley van Schalkwyk", "role": "Bowling Allrounder" },
+          { "id": "mohammad-mohsin", "name": "Mohammad Mohsin", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "monank-patel", "name": "Monank Patel (Captain)", "role": "WK-Batsman" },
+          { "id": "andries-gous", "name": "Andries Gous", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "nosthush-kenjige", "name": "Nosthush Kenjige", "role": "Bowler" },
+          { "id": "saurabh-netravalkar", "name": "Saurabh Netravalkar", "role": "Bowler" },
+          { "id": "ali-khan", "name": "Ali Khan", "role": "Bowler" },
+          { "id": "ehsan-adil", "name": "Ehsan Adil", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "UAE",
+      "squad": {
+        "batters": [
+          { "id": "sohaib-khan", "name": "Sohaib Khan", "role": "Batsman" },
+          { "id": "mayank-kumar", "name": "Mayank Kumar", "role": "Batsman" },
+          { "id": "muhammad-waseem", "name": "Muhammad Waseem (Captain)", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "dhruv-parashar", "name": "Dhruv Parashar", "role": "Batting Allrounder" },
+          { "id": "alishan-sharafu", "name": "Alishan Sharafu", "role": "Batting Allrounder" },
+          { "id": "harshit-kaushik", "name": "Harshit Kaushik", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "aryansh-sharma", "name": "Aryansh Sharma", "role": "WK-Batsman" },
+          { "id": "syed-haider", "name": "Syed Haider", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "simranjeet-singh", "name": "Simranjeet Singh", "role": "Bowler" },
+          { "id": "muhammad-rohid-khan", "name": "Muhammad Rohid Khan", "role": "Bowler" },
+          { "id": "muhammad-jawadullah", "name": "Muhammad Jawadullah", "role": "Bowler" },
+          { "id": "muhammad-farooq", "name": "Muhammad Farooq", "role": "Bowler" },
+          { "id": "muhammad-arfan", "name": "Muhammad Arfan", "role": "Bowler" },
+          { "id": "junaid-siddique", "name": "Junaid Siddique", "role": "Bowler" },
+          { "id": "haider-ali", "name": "Haider Ali", "role": "Bowler" }
+        ]
+      }
+    },
+    {
+      "team": "Sri Lanka",
+      "squad": {
+        "batters": [
+          { "id": "pathum-nissanka", "name": "Pathum Nissanka", "role": "Batsman" },
+          { "id": "pavan-rathnayake", "name": "Pavan Rathnayake", "role": "Batsman" }
+        ],
+        "allRounders": [
+          { "id": "dasun-shanaka", "name": "Dasun Shanaka (Captain)", "role": "Batting Allrounder" },
+          { "id": "kamindu-mendis", "name": "Kamindu Mendis", "role": "Batting Allrounder" },
+          { "id": "charith-asalanka", "name": "Charith Asalanka", "role": "Batting Allrounder" },
+          { "id": "janith-liyanage", "name": "Janith Liyanage", "role": "Batting Allrounder" },
+          { "id": "wanindu-hasaranga", "name": "Wanindu Hasaranga", "role": "Bowling Allrounder" },
+          { "id": "dunith-wellalage", "name": "Dunith Wellalage", "role": "Bowling Allrounder" },
+          { "id": "dushan-hemantha", "name": "Dushan Hemantha", "role": "Bowling Allrounder" }
+        ],
+        "wicketKeepers": [
+          { "id": "kamil-mishara", "name": "Kamil Mishara", "role": "WK-Batsman" },
+          { "id": "kusal-mendis", "name": "Kusal Mendis", "role": "WK-Batsman" },
+          { "id": "kusal-perera", "name": "Kusal Perera", "role": "WK-Batsman" }
+        ],
+        "bowlers": [
+          { "id": "maheesh-theekshana", "name": "Maheesh Theekshana", "role": "Bowler" },
+          { "id": "dushmantha-chameera", "name": "Dushmantha Chameera", "role": "Bowler" },
+          { "id": "matheesha-pathirana", "name": "Matheesha Pathirana", "role": "Bowler" },
+          { "id": "pramod-madushan", "name": "Pramod Madushan", "role": "Bowler" },
+          { "id": "dilshan-madushanka", "name": "Dilshan Madushanka", "role": "Bowler" }
+        ]
+      }
+    }
+  ]
+}

@@ -9,6 +9,7 @@ import { HeadToHeadModal } from './components/HeadToHeadModal';
 import { TournamentReportModal } from './components/TournamentReportModal';
 import { ChampionsHistoryModal } from './components/ChampionsHistoryModal';
 import { LiveMatchSimulatorModal } from './components/LiveMatchSimulatorModal';
+import { initSquadsFromApi } from './engine/cricketPlayerNames';
 import { CricketTournamentSize, PitchType } from './types/cricket';
 import { Globe, Play, ShieldCheck, Sparkles, BarChart3, Swords, FileText, Trophy, Volume2, VolumeX, Radio } from 'lucide-react';
 import { soundFx } from './utils/soundFx';
@@ -45,6 +46,7 @@ export const App: React.FC = () => {
 
   useEffect(() => {
     loadCountries();
+    initSquadsFromApi();
   }, [loadCountries]);
 
   if (isLoadingCountries && allCountries.length === 0) {
